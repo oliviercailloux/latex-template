@@ -1,0 +1,122 @@
+\usepackage{xstring}
+\usepackage{pgffor}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\extractlast}{O{.}mo}
+ {
+  \seq_set_split:Nnn \l_stroobants_string_seq { #1 } { #2 }
+  \IfNoValueTF { #3 }
+   {
+    \seq_item:Nn \l_stroobants_string_seq { -1 }
+   }
+   {
+    \tl_set:Nx #3 { \seq_item:Nn \l_stroobants_string_seq { -1 } }
+   }
+ }
+\seq_new:N \l_stroobants_string_seq
+\ExplSyntaxOff
+
+\newbool{refAPIFormatTypewriter}
+%show at sign if present in input
+\newbool{refAPIShowAt}
+\newbool{refAPIShowPackage}
+\newbool{refAPIShowMethod}
+\newbool{refAPIShowParameters}
+\pgfkeys{
+	/refAPI/.is family,
+	/refAPI/.cd,
+	display string/.estore in = \refAPIDisplayString,
+	formatTypewriter/.is if = refAPIFormatTypewriter,
+	showAt/.is if = refAPIShowAt,
+	showPackage/.is if = refAPIShowPackage,
+	showMethod/.is if = refAPIShowMethod,
+	showParameters/.is if = refAPIShowParameters,
+	default/.style = {
+		display string =,
+		formatTypewriter = true,
+		showAt = true,
+		showPackage = false,
+		showMethod = true,
+		showParameters = false,
+	},
+}
+
+%Thx https://tex.stackexchange.com/a/34318
+%TODO URL without module?
+%TODO define the following refAPI macros. Module (before unique / or empty); Method (after unique # or empty); Field (after unique # and before unique ( or empty if no # or after unique # if no (); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
+%OLD - Defines: \refAPIFQName (before #) ; \refAPIFieldFull (after #) ; \refAPIFieldShort (after # and before -) ; \refAPIPackageSlashes (FQName before / with slashes instead of dots) ; \refAPIClass (FQName after /)
+%{java.base/java.time.zone.ZoneOffsetTransition} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html
+%{java.base/java.time.zone.ZoneOffsetTransition\#getDateTimeAfter()} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html#getDateTimeAfter()
+%{java.base/java.time.zone.ZoneOffsetTransition\#compareTo(java.time.zone.ZoneOffsetTransition)} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html#compareTo(java.time.zone.ZoneOffsetTransition)
+%{java.base/java.lang.String\#substring(int, int)} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#substring(int,int) NB need to drop space in parameter
+%{@java.base/java.lang.annotation.Documented} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/annotation/Documented.html
+%{@java.base/java.lang.SuppressWarnings\#value()} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/SuppressWarnings.html#value()
+%The main argument specifies everything needed to build the URL. From this, a default appearance is built, which can be changed with keys. Must be able to: hide @ sign; hide method; hide parameters; hide package; replace everything with provided display string; display in texttt mode or not?.
+\newcommand{\jrefAPI}[2][]{%
+	\pgfkeys{/refAPI/.cd, default, #1}%
+	\IfSubStr{#2}{\#}{%
+		\StrBefore{#2}{\#}[\refAPIFQName]%
+		\StrBehind{#2}{\#}[\refAPIFieldFull]%
+	}{%
+		\edef\refAPIFQName{#2}%
+		\edef\refAPIFieldFull{}%
+	}%
+	\IfSubStr{\refAPIFieldFull}{-}{%
+		\StrBefore{\refAPIFieldFull}{-}[\refAPIFieldShort]%
+	}{%
+		\edef\refAPIFieldShort{\refAPIFieldFull}%
+	}%
+	\StrBefore{\refAPIFQName}{/}[\refAPIPackage]%
+	\StrBehind{\refAPIFQName}{/}[\refAPIClass]%
+	\StrSubstitute{\refAPIPackage}{.}{/}[\refAPIPackageSlashes]%
+	\ifbool{refAPIIsAnnotation}{%
+		\edef\refAPIAnnot{@}%
+	}{%
+		\edef\refAPIAnnot{}%
+	}%
+	\IfEq{\refAPIFieldFull}{}{%
+		{%
+			\ifbool{refAPIDisplayFull}{%
+				\refAPIPackage%
+			}{%
+			}%
+			\refAPIPrefix{%
+				\href{%
+					\refAPIBaseUrl\refAPIPackageSlashes/\refAPIClass.html%
+				}{%
+					\refAPIAnnot\refAPIClass%
+				}%
+			}%
+			\refAPISuffix%
+		}%
+	}{%
+		{%
+			\refAPIPrefix{%
+				\ifbool{refAPIOmitFQName}{%
+				}{%
+					\refAPIAnnot\refAPIClass.%
+				}%
+				\href{%
+					\refAPIBaseUrl\refAPIPackageSlashes/\refAPIClass.html\#\refAPIFieldFull%
+				}{%
+					\refAPIFieldShort%
+				}%
+			}%
+			\refAPISuffix%
+		}%
+	}%
+	\refAPIPrintAll%
+}
+
+\newcommand{\refAPIPrintAll}{%
+	\begin{description}
+		\item[BaseUrl] \foreach \sfx in {BaseUrl}{\csname refAPI\sfx\endcsname}
+		\foreach \sfx in {FQName, FieldFull, FieldShort, Package, Class, PackageSlashes}{\item[\sfx] \csname refAPI\sfx\endcsname}
+	\end{description}%
+}
+
+%\newcommand{\jeeref}[2][]{\jrefAPI[#1, base url = https://docs.oracle.com/javaee/7/api/]{#2}}
+\newcommand{\jseref}[2][]{\jrefAPI[#1, base url = https://docs.oracle.com/javase/8/docs/api/]{#2}}
+%Standard HTML RenderKit : https://docs.oracle.com/javaee/7/javaserver-faces-2-2/renderkitdocs/HTML_BASIC/javax.faces.Inputjavax.faces.Text.html
+%\newcommand{\jsftag}[2][]{\jrefAPI{base url = https://docs.oracle.com/javaee/7/javaserver-faces-2-2/vdldocs-facelets/, full, prefix=:, #1}}
+

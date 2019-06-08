@@ -1,0 +1,63 @@
+%nag warns a lot about tikzposter.
+%\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[blockverticalspace=3cm]{tikzposter}
+\input{preamble/packages}
+\input{preamble/redac}
+\input{preamble/math_basics}
+\input{preamble/math_mine}
+\input{preamble/draw}
+%\input{preamble/acronyms}
+%\input{preamble/refAPIcmds}
+
+%I find these settings useful in draft mode. Should be removed for final versions.
+	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
+		\tolerance=2000
+	%Accept overfull hbox up to...
+		\hfuzz=2cm
+	%Reduces verbosity about the bad line breaks.
+		\hbadness 5000
+	%Reduces verbosity about the underful vboxes.
+		\vbadness=1300
+
+\title{Studying Deliberated Judgements}
+\institute{LAMSADE, Université Paris-Dauphine}
+\author{Olivier Cailloux}
+
+\begin{document}
+\maketitle[titletotopverticalspace=10cm]
+
+\begin{columns}
+	\column{0.4}
+		\block{Our objective}{
+			Scenario:
+			\begin{itemize}
+				\item Assume a commitee wants to choose a voting rule
+				\item Many rules
+				\item No best rule
+			\end{itemize}
+			We want to:
+				\begin{itemize}
+					\item \emph{automatically} explain the outcome of rules
+					\item \emph{based} on their properties
+					\item by referring to \emph{examples}
+				\end{itemize}
+		}
+	\column{0.6}
+		\block{Example dialogue}{
+			Let’s argue that in $\prof$, $a$ should win, using “unanimity”, “symmetry” and “reinforcement”
+			\begin{center}
+				\begin{tabularx}{0.9\colwidth}{>{\bfseries}p{4cm}X}
+					System & Consider election $\prof_1$, involving only voter~$v_1$. Do you agree that $a$, enjoying unanimous support, should win this election? \\
+					User & Yes, of course. \\
+					System & Now consider election $\prof_2$, involving only voters $v_2$ and $v_3$. Do you agree that, for symmetry reasons, the outcome should be a three-way tie? \\
+					User & Yes, that sounds reasonable. \\
+					System & Observe that when we combine $\prof_1$ and $\prof_2$, we obtain our election of interest, namely $\prof$. Do you agree that in this combined election, as there was a three-way tie in $\prof_2$, $\prof_1$ should be used to decide the winner? \\
+					User & Yes, I do. \\
+					System & To summarise, you agree that $a$ should win for~$\prof$.
+				\end{tabularx}
+			\end{center}
+		}
+\end{columns}
+
+\end{document}
+
