@@ -44,13 +44,26 @@
 	\usepackage{natbib}
 
 \newtoggle{LCpres}
+	\newtoggle{LCart}
+	\newtoggle{LCposter}
 	\makeatletter
 	\@ifclassloaded{beamer}{
 		\toggletrue{LCpres}
+		\togglefalse{LCart}
+		\togglefalse{LCposter}
 		\wlog{Presentation mode}
 	}{
-		\togglefalse{LCpres}
-		\wlog{Article mode}
+		\@ifclassloaded{tikzposter}{
+			\toggletrue{LCposter}
+			\togglefalse{LCpres}
+			\togglefalse{LCart}
+			\wlog{Poster mode}
+		}{
+			\toggletrue{LCart}
+			\togglefalse{LCpres}
+			\togglefalse{LCposter}
+			\wlog{Article mode}
+		}
 	}
 	\makeatother%
 
