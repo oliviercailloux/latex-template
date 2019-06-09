@@ -37,7 +37,7 @@
 %math-mode version of "l" column type TODO might require \usepackage{array} for \newcolumntype macro
 	%\newcolumntype{L}{>{$}l<{$}}; TODO see why simple example from https://fr.wikibooks.org/wiki/LaTeX/Tableaux#L'environnement_tabular*,_ma%C3%AEtrise_de_la_largeur_d'un_tableau fails with DJ poster.
 %Provides \addtocmd, \patchcmd, \xpretocmd, \newtoggle commands. TODO may be false, \newtoggle provided by etoolbox… xpatch extends etoolbox. Also loads xparse, which provides \NewDocumentCommand and similar commands possibly intended as replacement of \newcommand in LaTeX3 (for package authors? see https://tex.stackexchange.com/q/98152 and https://github.com/latex3/latex2e/issues/89).
-	\usepackage{xpatch} 
+	\usepackage{xpatch}
 %ntheorem doc says: “empheq provides an enhanced vertical placement of the endmarks”; must be loaded before ntheorem. Loads the mathtools package, which loads and fixes some bugs in amsmath and provides \DeclarePairedDelimiter. amsmath is considered a basic, mandatory package nowadays (Grätzer, More Math Into LaTeX).
 	\usepackage[ntheorem]{empheq}
 %Package frenchb asks to load natbib before babel-french. Package hyperref asks to load natbib before hyperref.
@@ -68,6 +68,7 @@
 	\makeatother%
 
 %Language options ([french, english]) should be on the document level (last is main); except with tikzposter: put [french, english] options next to \usepackage{babel} to avoid warning. beamer uses the \translate command for the appendix: omitting babel results in a warning, see https://github.com/josephwright/beamer/issues/449. Babel also seems required for \refname.
+%TODO poster!
 	\iftoggle{LCpres}{
 		\usepackage{babel}
 	}{
@@ -122,7 +123,7 @@
 		\catcode`#=11\relax
 		\gdef\fixauthor{\xpretocmd{\author}{\addhrauthor{#2}}{}{}}%
 	}
-	\nottoggle{LCpres}{
+	\iftoggle{LCart}{
 		\usepackage{authblk}
 		\renewcommand\Affilfont{\small}
 		\fixauthor
@@ -131,7 +132,7 @@
 		}
 	}{
 	}
-%I do not use floatrow, because it requires an ugly hack for proper functioning with KOMA script (see scrhack doc). Instead, the following command centers all floats (using \centering, http://texblog.net/latex-archive/layout/center-centering/), and I manually place my table captions above and figure captions below their contents (https://tex.stackexchange.com/a/3253).
+%I do not use floatrow, because it requires an ugly hack for proper functioning with KOMA script (see scrhack doc). Instead, the following command centers all floats (using \centering, as the center environment adds space, http://texblog.net/latex-archive/layout/center-centering/), and I manually place my table captions above and figure captions below their contents (https://tex.stackexchange.com/a/3253).
 	\makeatletter
 	\g@addto@macro\@floatboxreset\centering
 	\makeatother
@@ -159,12 +160,15 @@
 %“The \boldsymbol command is obtained preferably by using the bm package, which provides a newer, more powerful version than the one provided by the amsmath package. Generally speaking, it is ill-advised to apply \boldsymbol to more than one symbol at a time.” — AMS Short math guide. “If no bold font appears to be available for a particular symbol, \bm will use ‘poor man’s bold’” — bm. It is “best to load the package after any packages that define new symbol fonts” – bm. bm defines \boldsymbol as synonym to \bm. \boldmath accesses the correct font if it exists; it is used by \bm when appropriate. See https://tex.stackexchange.com/a/10643 and https://github.com/latex3/latex2e/issues/71 for some difficulties with \bm.
 	\usepackage{bm}
 	\nottoggle{LCpres}{
-	%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle. Option standard loads amssymb and latexsym. Must be loaded after amsmath (from ntheorem doc). From cleveref doc, “ntheorem is fully supported and even recommended”; says to load cleveref after ntheorem. When used with tikzposter, warns about size substitution for the lasy (latexsym) font.
+	%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle. Option standard loads amssymb and latexsym. Must be loaded after amsmath (from ntheorem doc). From cleveref doc, “ntheorem is fully supported and even recommended”; says to load cleveref after ntheorem. When used with tikzposter, warns about size substitution for the lasy (latexsym) font.%TODO poster
 		\usepackage[thmmarks, amsmath, standard, hyperref]{ntheorem}
 		%empheq doc says to do this after loading ntheorem
 		\usetagform{default}
 	%Provides \cref. Unfortunately, cref fails when the language is French and referring to a label whose name contains a colon (https://tex.stackexchange.com/q/83798). Use \cref{sec\string:intro} to work around this. cleveref should go “laster” than hyperref.
 		\usepackage{cleveref}
+	}{
+	}
+	\iftoggle{LCart}{
 	%Equations get numbers iff they are referenced. Loading order should be “amsmath → hyperref → cleveref → autonum”, according to autonum doc. Use this in preference to the showonlyrefs option from mathtools, see https://tex.stackexchange.com/q/459918 and autonum doc. See https://tex.stackexchange.com/a/285953 for the etex line. Incompatible with my version of tikzposter (produces “! Improper \prevdepth”).
 		\expandafter\def\csname ver@etex.sty\endcsname{3000/12/31}\let\globcount\newcount
 		\usepackage{autonum}
@@ -187,15 +191,14 @@
 	%\usepackage{printlen}
 	%\uselengthunit{mm}
 
-%TODO comment here and below
 \iftoggle{LCpres}{
 	\usepackage{appendixnumberbeamer}
+	%I have yet to see anyone actually use these navigation symbols; let’s disable them
 	\setbeamertemplate{navigation symbols}{} 
 	\usepackage{preamble/beamerthemeParisFrance}
 	\setcounter{tocdepth}{10}
 }{
 }
 
-%Do not use the displaymath environment: use equation. Do not use the eqnarray or eqnarray* environments: use align(*). They lead to incorrect spacing. (See l2tabu or amsldoc.) 
-%Use \centering or the center environment for additional space.
+%Do not use the displaymath environment: use equation. Do not use the eqnarray or eqnarray* environments: use align(*). This improves spacing. (See l2tabu or amsldoc.)
 
