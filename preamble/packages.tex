@@ -12,7 +12,7 @@
 	\usepackage{newunicodechar}
 %Text Companion fonts, much used together with CM-like fonts. Provides \texteuro and commands for text mode characters such as \textminus, \textrightarrow, \textlbrackdbl.
 	\usepackage{textcomp}
-%Solves bug in lmodern, https://tex.stackexchange.com/a/261188; probably useful only for unusually big font sizes.
+%Solves bug in lmodern, https://tex.stackexchange.com/a/261188; probably useful only for unusually big font sizes; and probably better to use exscale instead. Note that the authors of exscale write against this trick.
 	%\DeclareFontShape{OMX}{cmex}{m}{n}{
 		%<-7.5> cmex7
 		%<7.5-8.5> cmex8
@@ -20,7 +20,6 @@
 		%<9.5-> cmex10
 	%}{}
 	%\SetSymbolFont{largesymbols}{normal}{OMX}{cmex}{m}{n}
-	%\SetSymbolFont{largesymbols}{bold}  {OMX}{cmex}{m}{n}
 %More symbols (such as \sum) available in bold version, see https://github.com/latex3/latex2e/issues/71.
 	\DeclareFontShape{OMX}{cmex}{bx}{n}{%
 	   <->sfixed*cmexb10%
@@ -88,7 +87,7 @@
 	\usepackage[nodayofweek]{datetime}
 }{
 }
-%For presentations, Beamer implicitely uses the pdfusetitle option. ntheorem doc says to load hyperref “before the first use of \newtheorem”. autonum doc mandates option hypertexnames=false. I want to highlight links only if necessary for the reader to recognize it as a link, to reduce distraction. In presentations, this is already taken care of by beamer. If using colorlinks=true in a presentation, see https://tex.stackexchange.com/q/203056.
+%For presentations, Beamer implicitely uses the pdfusetitle option. ntheorem doc says to load hyperref “before the first use of \newtheorem”. autonum doc mandates option hypertexnames=false. I want to highlight links only if necessary for the reader to recognize it as a link, to reduce distraction. In presentations, this is already taken care of by beamer. If using colorlinks=true in a presentation, see https://tex.stackexchange.com/q/203056. Crashes the first compilation with tikzposter, just compile again and the problem disappears, see https://tex.stackexchange.com/q/254257.
 \makeatletter
 \iftoggle{LCpres}{
 	\usepackage{hyperref}
@@ -154,13 +153,13 @@
 	\usepackage{fixmath}
 %Provides \mathbb; obsoletes latexsym (see http://tug.ctan.org/macros/latex/base/latexsym.dtx). Relatedly, \usepackage{eucal} to change the mathcal font and \usepackage[mathscr]{eucal} (apparently equivalent to \usepackage[mathscr]{euscript}) to supplement \mathcal with \mathscr. This last option is not very useful as both fonts are similar, and the intent of the authors of eucal was to provide a replacement to mathcal (see doc euscript). Also provides \mathfrak for supplementary letters.
 	\usepackage{amsfonts}
-%Provides a beautiful (IMHO) \mathscr and really different than \mathcal, for supplementary uppercase letters. But there is no bold version. When used with tikzposter, warns about size substitution.
-	\usepackage{mathrsfs}
+%Provides a beautiful (IMHO) \mathscr and really different than \mathcal, for supplementary uppercase letters. But there is no bold version. Alternative: mathrsfs (more slanted), but when used with tikzposter, it warns about size substitution, see https://tex.stackexchange.com/q/495167.
+	\usepackage[scr]{rsfso}
 %Multiple means to produce bold math: \mathbf, \boldmath (defined to be \mathversion{bold}, see fntguide), \pmb, \boldsymbol (all legacy, from LaTeX base and AMS), \bm (the most recommended one), \mathbold from package fixmath (I don’t see its advantage over \boldsymbol).
 %“The \boldsymbol command is obtained preferably by using the bm package, which provides a newer, more powerful version than the one provided by the amsmath package. Generally speaking, it is ill-advised to apply \boldsymbol to more than one symbol at a time.” — AMS Short math guide. “If no bold font appears to be available for a particular symbol, \bm will use ‘poor man’s bold’” — bm. It is “best to load the package after any packages that define new symbol fonts” – bm. bm defines \boldsymbol as synonym to \bm. \boldmath accesses the correct font if it exists; it is used by \bm when appropriate. See https://tex.stackexchange.com/a/10643 and https://github.com/latex3/latex2e/issues/71 for some difficulties with \bm.
 	\usepackage{bm}
 	\nottoggle{LCpres}{
-	%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle. Option standard loads amssymb and latexsym. Must be loaded after amsmath (from ntheorem doc). From cleveref doc, “ntheorem is fully supported and even recommended”; says to load cleveref after ntheorem. When used with tikzposter, warns about size substitution for the lasy (latexsym) font.%TODO poster
+	%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle. Option standard loads amssymb and latexsym. Must be loaded after amsmath (from ntheorem doc). From cleveref doc, “ntheorem is fully supported and even recommended”; says to load cleveref after ntheorem. When used with tikzposter, warns about size substitution for the lasy (latexsym) font when using \url, because ntheorem loads latexsym; relatedly (but not directly related to ntheorem), size substitution warning with the cmex font happens when loading amsmath and using \url.%TODO poster
 		\usepackage[thmmarks, amsmath, standard, hyperref]{ntheorem}
 		%empheq doc says to do this after loading ntheorem
 		\usetagform{default}
