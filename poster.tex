@@ -1,11 +1,13 @@
 %nag warns a lot about tikzposter.
 %\RequirePackage[l2tabu, orthodox]{nag}
 \documentclass[blockverticalspace=3cm]{tikzposter}
-\input{preamble/packages}
-\input{preamble/redac}
-\input{preamble/math_basics}
-\input{preamble/math_mine}
-\input{preamble/draw}
+\usepackage{latexsym}
+\usepackage{url}%\texttt ok but \url with {amsmath} produces warning Font shape `OMX/cmex/m/n' in size <29.86> not available size <24.88> substituted on input line 41. And {latexsym} instead produces Font shape `U/lasy/m/n' in size <29.86> not available size <24.88> substituted on input line 40. Ask which one I should load (first?)
+%\input{preamble/packages}
+%\input{preamble/redac}
+%\input{preamble/math_basics}
+%\input{preamble/math_mine}
+%\input{preamble/draw}
 %\input{preamble/acronyms}
 %\input{preamble/refAPIcmds}
 
@@ -33,19 +35,8 @@
 				\end{itemize}
 		}
 	\column{0.6}
-		\block{Example dialogue}{
-			Let’s argue that in $\prof$, $a$ should win, using “unanimity”, “symmetry” and “reinforcement”
-			\begin{center}
-				\begin{tabularx}{0.9\colwidth}{>{\bfseries}p{4cm}X}
-					System & Consider election $\prof_1$, involving only voter~$v_1$. Do you agree that $a$, enjoying unanimous support, should win this election? \\
-					User & Yes, of course. \\
-					System & Now consider election $\prof_2$, involving only voters $v_2$ and $v_3$. Do you agree that, for symmetry reasons, the outcome should be a three-way tie? \\
-					User & Yes, that sounds reasonable. \\
-					System & Observe that when we combine $\prof_1$ and $\prof_2$, we obtain our election of interest, namely $\prof$. Do you agree that in this combined election, as there was a three-way tie in $\prof_2$, $\prof_1$ should be used to decide the winner? \\
-					User & Yes, I do. \\
-					System & To summarise, you agree that $a$ should win for~$\prof$.
-				\end{tabularx}
-			\end{center}
+		\block{Context and goal of this poster}{
+			See \url{https://github.com/oliviercailloux/formal-framework-dj}.
 		}
 \end{columns}
 
