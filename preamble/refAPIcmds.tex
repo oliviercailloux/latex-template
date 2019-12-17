@@ -16,9 +16,7 @@
 \seq_new:N \l_stroobants_string_seq
 \ExplSyntaxOff
 
-\newbool{refAPIFormatTypewriter}
-%show at sign if present in input
-\newbool{refAPIShowAt}
+\newbool{refAPITypewriter}
 \newbool{refAPIShowPackage}
 \newbool{refAPIShowField}
 \newbool{refAPIShowMethod}
@@ -29,27 +27,24 @@
 	display string/.estore in = \refAPIDisplayString,
 	base url/.estore in = \refAPIBaseUrl,
 	parameters style/.estore in = \refAPIParametersStyle,
-	format typewriter/.is if = refAPIFormatTypewriter,
-	showAt/.is if = refAPIShowAt,
-	showPackage/.is if = refAPIShowPackage,
-	showField/.is if = refAPIShowField,
-	showMethod/.is if = refAPIShowMethod,
-	showParameters/.is if = refAPIShowParameters,
+	typewriter/.is if = refAPITypewriter,
+	show package/.is if = refAPIShowPackage,
+	show field/.is if = refAPIShowField,
+	show method/.is if = refAPIShowMethod,
+	show parameters/.is if = refAPIShowParameters,
 	default/.style = {
 		display string =,
-		format typewriter = true,
-		showAt = true,
-		showPackage = false,
-		showField = true,
-		showMethod = true,
-		showParameters = false,
+		typewriter = true,
+		show package = false,
+		show field = true,
+		show method = true,
+		show parameters = false,
 	},
 }
 
 %Thx https://tex.stackexchange.com/a/34318
 %Approach: define the following refAPI macros. AtSign (starts with at); Module (before unique / or empty); Method (after unique # if has ( or empty); Field (after unique # if no ( or empty if no #); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
-%The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. From this, a default appearance is built, which can be changed with keys. Must be able to: hide @ sign; hide method; hide parameters; hide package; TODO replace everything with provided display string; display in texttt mode or not? ; remove showAt parameter.
-%Shows at iff showAt AND main argument starts with @
+%The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. The default appearance can be changed with keys.
 \newcommand{\jrefAPI}[2][]{%
 	\pgfkeys{/refAPI/.cd, default, #1}%
 	\edef\refAPIFull{#2}%
@@ -133,12 +128,10 @@
 	}%
 	%
 	\edef\refAPILinkText{}%
-	\ifbool{refAPIShowAt}{%
-		\appto\refAPILinkText{\refAPIAtSign}%
-	}{%
-	}%
+	\appto\refAPILinkText{\refAPIAtSign}%
 	\ifbool{refAPIShowPackage}{%
 		\appto\refAPILinkText{\refAPIPackage}%
+		\appto\refAPILinkText{.}%
 	}{%
 	}%
 	\appto\refAPILinkText{\refAPIClass}%
@@ -163,8 +156,16 @@
 		}%
 	}{%
 	}%
-	%	
-	\href{\refAPITarget}{\refAPILinkText}%
+	%
+	\IfEq{\refAPIDisplayString}{}{%
+		\ifbool{refAPITypewriter}{%
+			\href{\refAPITarget}{\texttt{\refAPILinkText}}%
+		}{%
+			\href{\refAPITarget}{\refAPILinkText}%
+		}%
+	}{%
+		\href{\refAPITarget}{\refAPIDisplayString}%
+	}%
 }
 
 \newcommand{\refAPIPrintAll}{%
@@ -174,12 +175,6 @@
 	\end{description}%
 }
 
-\DeclareExpandableDocumentCommand{\refAPIBaseUrl}{}{https://docs.oracle.com/javase/8/docs/api/}
-\DeclareExpandableDocumentCommand{\refAPIParametersStyle}{}{hyphen}
-%\DeclareExpandableDocumentCommand{\refAPIBaseUrl}{}{https://docs.oracle.com/en/java/javase/12/docs/api/}
-%\DeclareExpandableDocumentCommand{\refAPIParametersStyle}{}{parenthesis}
-%\newcommand{\jeeref}[2][]{\jrefAPI[#1, base url = https://docs.oracle.com/javaee/7/api/]{#2}}
-\newcommand{\jseref}[2][]{\jrefAPI[#1]{#2}}
 %Standard HTML RenderKit : https://docs.oracle.com/javaee/7/javaserver-faces-2-2/renderkitdocs/HTML_BASIC/javax.faces.Inputjavax.faces.Text.html
 %\newcommand{\jsftag}[2][]{\jrefAPI{base url = https://docs.oracle.com/javaee/7/javaserver-faces-2-2/vdldocs-facelets/, full, prefix=:, #1}}
 
