@@ -27,7 +27,9 @@
 	/refAPI/.is family,
 	/refAPI/.cd,
 	display string/.estore in = \refAPIDisplayString,
-	formatTypewriter/.is if = refAPIFormatTypewriter,
+	base url/.estore in = \refAPIBaseUrl,
+	parameters style/.estore in = \refAPIParametersStyle,
+	format typewriter/.is if = refAPIFormatTypewriter,
 	showAt/.is if = refAPIShowAt,
 	showPackage/.is if = refAPIShowPackage,
 	showField/.is if = refAPIShowField,
@@ -35,7 +37,7 @@
 	showParameters/.is if = refAPIShowParameters,
 	default/.style = {
 		display string =,
-		formatTypewriter = true,
+		format typewriter = true,
 		showAt = true,
 		showPackage = false,
 		showField = true,
@@ -45,20 +47,12 @@
 }
 
 %Thx https://tex.stackexchange.com/a/34318
-%TODO URL without module?
-%TODO Refine into MethodWithParameters, MethodWithParametersWithoutSpaces and MethodWithoutParameters.
 %Approach: define the following refAPI macros. AtSign (starts with at); Module (before unique / or empty); Method (after unique # if has ( or empty); Field (after unique # if no ( or empty if no #); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
-%OLD - Defines: \refAPIFQName (before #) ; \refAPIFieldFull (after #) ; \refAPIFieldShort (after # and before -) ; \refAPIPackageSlashes (FQName before / with slashes instead of dots) ; \refAPIClass (FQName after /)
-%{java.base/java.time.zone.ZoneOffsetTransition} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html
-%{java.base/java.time.zone.ZoneOffsetTransition\#getDateTimeAfter()} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html#getDateTimeAfter()
-%{java.base/java.time.zone.ZoneOffsetTransition\#compareTo(java.time.zone.ZoneOffsetTransition)} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html#compareTo(java.time.zone.ZoneOffsetTransition)
-%{java.base/java.lang.String\#substring(int, int)} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#substring(int,int) NB need to drop space in parameter
-%{@java.base/java.lang.annotation.Documented} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/annotation/Documented.html
-%{@java.base/java.lang.SuppressWarnings\#value()} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/SuppressWarnings.html#value()
-%The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. From this, a default appearance is built, which can be changed with keys. Must be able to: hide @ sign; hide method; hide parameters; hide package; replace everything with provided display string; display in texttt mode or not?.
+%The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. From this, a default appearance is built, which can be changed with keys. Must be able to: hide @ sign; hide method; hide parameters; hide package; TODO replace everything with provided display string; display in texttt mode or not? ; remove showAt parameter.
 %Shows at iff showAt AND main argument starts with @
 \newcommand{\jrefAPI}[2][]{%
 	\pgfkeys{/refAPI/.cd, default, #1}%
+	\edef\refAPIFull{#2}%
 	\IfBeginWith{#2}{@}{%
 		\edef\refAPIAtSign{@}%
 		\StrBehind{#2}{@}[\refAPIWithoutAt]%
@@ -67,10 +61,21 @@
 		\edef\refAPIWithoutAt{#2}%
 	}%
 	\IfSubStr{#2}{/}{%
-		\StrBefore{\refAPIWithoutAt}{/}[\refAPIModule]%
+	}{%
+		\typeout{Missing slash!}
+	}%
+	\StrBefore{\refAPIWithoutAt}{/}[\refAPIBeforeFirstSlash]%
+	\StrBehind{\refAPIWithoutAt}{/}[\refAPIAfterFirstSlash]%
+	\IfSubStr{\refAPIAfterFirstSlash}{/}{%
+		\edef\refAPIModule{\refAPIBeforeFirstSlash}%
+		\StrBefore{\refAPIAfterFirstSlash}{/}[\refAPIPackage]%
+		\StrBehind{\refAPIAfterFirstSlash}{/}[\refAPIClassAndRest]%
 	}{%
 		\edef\refAPIModule{}%
+		\edef\refAPIPackage{\refAPIBeforeFirstSlash}%
+		\edef\refAPIClassAndRest{\refAPIAfterFirstSlash}%
 	}%
+	\StrSubstitute{\refAPIPackage}{.}{/}[\refAPIPackageSlashes]%
 	\IfSubStr{#2}{\#}{%
 		\StrBehind{#2}{\#}[\refAPIAfterSharp]%
 		\IfSubStr{\refAPIAfterSharp}{(}{%
@@ -93,26 +98,10 @@
 	}{%
 		\edef\refAPIField{}%
 	}%
-	\IfSubStr{#2}{/}{%
-		\StrBehind{#2}{/}[\refAPIAfterSlash]%
-		\IfSubStr{\refAPIAfterSlash}{\#}{%
-			\StrBefore{\refAPIAfterSlash}{\#}[\refAPIFQName]%
-		}{%
-			\edef\refAPIFQName{\refAPIAfterSlash}%
-		}%
+	\IfSubStr{\refAPIClassAndRest}{\#}{%
+		\StrBefore{\refAPIClassAndRest}{\#}[\refAPIClass]%
 	}{%
-		\IfSubStr{#2}{\#}{%
-			\StrBefore{\refAPIWithoutAt}{\#}[\refAPIFQName]%
-		}{%
-			\edef\refAPIFQName{\refAPIWithoutAt}%
-		}%
-	}%
-	\StrSubstitute{\refAPIFQName}{.}{/}[\refAPIFQNameSlashes]%
-	\IfSubStr{#2}{\#}{%
-		\StrBefore{\refAPIWithoutAt}{\#}[\refAPIBeforeSharp]%
-		\edef\refAPIClass{\extractlast{\refAPIBeforeSharp}}%
-	}{%
-		\edef\refAPIClass{\extractlast{#2}}%
+		\edef\refAPIClass{\refAPIClassAndRest}%
 	}%
 	%
 	%\refAPIPrintAll%
@@ -123,7 +112,9 @@
 		\appto\refAPITarget{\refAPIModule}%
 		\appto\refAPITarget{/}%
 	}%
-	\appto\refAPITarget{\refAPIFQNameSlashes}%
+	\appto\refAPITarget{\refAPIPackageSlashes}%
+	\appto\refAPITarget{/}%
+	\appto\refAPITarget{\refAPIClass}%
 	\appto\refAPITarget{.html}%
 	\IfEq{\refAPIField}{}{%
 	}{%
@@ -147,10 +138,10 @@
 	}{%
 	}%
 	\ifbool{refAPIShowPackage}{%
-		\appto\refAPILinkText{\refAPIFQName}%
+		\appto\refAPILinkText{\refAPIPackage}%
 	}{%
-		\appto\refAPILinkText{\refAPIClass}%
 	}%
+	\appto\refAPILinkText{\refAPIClass}%
 	\ifbool{refAPIShowField}{%
 		\IfEq{\refAPIField}{}{%
 		}{%
@@ -179,7 +170,7 @@
 \newcommand{\refAPIPrintAll}{%
 	\begin{description}
 		\item[BaseUrl] \foreach \sfx in {BaseUrl}{\csname refAPI\sfx\endcsname}
-		\foreach \sfx in {AtSign, Module, MethodWithParameters, MethodWithParametersWithoutSpaces, MethodWithoutParameters, Field, FQName, FQNameSlashes, Class, ParametersStyle}{\item[\sfx] \csname refAPI\sfx\endcsname}
+		\foreach \sfx in {Full, AtSign, Module, MethodWithParameters, MethodWithParametersWithoutSpaces, MethodWithoutParameters, Field, Package, PackageSlashes, Class}{\item[\sfx] \csname refAPI\sfx\endcsname}
 	\end{description}%
 }
 
