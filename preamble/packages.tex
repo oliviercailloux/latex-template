@@ -1,4 +1,4 @@
-%TODO consider \usepackage{slantsc} and \AtBeginDocument{%   \DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub*lmr/m/scsl}{}% }, https://tex.stackexchange.com/questions/32942/italic-shape-needed-in-small-caps-fonts  https://tex.stackexchange.com/questions/284338/italic-small-caps-not-working for the case: \ac{thing}, typeset in an Example environment, so that the small caps are italicized.
+%TODO poster: babel, ntheorem and the like.
 %Permits to copy eg x ⪰ y ⇔ v(x) ≥ v(y) from PDF to unicode data, and to search. From pdfTeX users manual. See https://tex.stackexchange.com/posts/comments/1203887.
 	\input glyphtounicode
 	\pdfgentounicode=1
@@ -25,17 +25,25 @@
 	   <->sfixed*cmexb10%
 	   }{}
 	\SetSymbolFont{largesymbols}{bold}{OMX}{cmex}{bx}{n}
-%There’s no bold small caps in Latin Modern, we switch to Computer Modern for bold small caps, see https://tex.stackexchange.com/a/22241
-	%\normalfont\DeclareFontShape{T1}{lmr}{bx}{sc} { <-> ssub * cmr/bx/sc }{}
+%For small caps also in italics, see https://tex.stackexchange.com/questions/32942/italic-shape-needed-in-small-caps-fonts, https://tex.stackexchange.com/questions/284338/italic-small-caps-not-working.
+	\usepackage{slantsc}
+	\AtBeginDocument{%
+		%“Since nearly no font family will contain real italic small caps variants, the best approach is to substitute them by slanted variants.” -- slantsc doc
+		%\DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub*lmr/m/scsl}{}%
+		%There’s no bold small caps in Latin Modern, we switch to Computer Modern for bold small caps, see https://tex.stackexchange.com/a/22241
+		%\DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub*cmr/bx/sc}{}%
+		%\DeclareFontShape{T1}{lmr}{bx}{scit}{<->ssub*cmr/bx/scsl}{}%
+	}
 %Warn about missing characters.
 	\tracinglostchars=2
 %Nicer tables: provides \toprule, \midrule, \bottomrule.
 	%\usepackage{booktabs}
-%For new column type X which stretches; can be used together with booktabs, see https://tex.stackexchange.com/a/97137.
+%For new column type X which stretches; can be used together with booktabs, see https://tex.stackexchange.com/a/97137. “tabularx modifies the widths of the columns, whereas tabular* modifies the widths of the inter-column spaces.” Loads array.
 	%\usepackage{tabularx}
-%math-mode version of "l" column type TODO might require \usepackage{array} for \newcolumntype macro
-	%\newcolumntype{L}{>{$}l<{$}}; TODO see why simple example from https://fr.wikibooks.org/wiki/LaTeX/Tableaux#L'environnement_tabular*,_ma%C3%AEtrise_de_la_largeur_d'un_tableau fails with DJ poster.
-%Provides \addtocmd, \patchcmd, \xpretocmd, \newtoggle commands. TODO may be false, \newtoggle provided by etoolbox… xpatch extends etoolbox. Also loads xparse, which provides \NewDocumentCommand and similar commands possibly intended as replacement of \newcommand in LaTeX3 (for package authors? see https://tex.stackexchange.com/q/98152 and https://github.com/latex3/latex2e/issues/89).
+%math-mode version of "l" column type. Requires \usepackage{array}.
+	%\usepackage{array}
+	%\newcolumntype{L}{>{$}l<{$}}
+%Provides \xpretocmd and loads etoolbox which provides \apptocmd, \patchcmd, \newtoggle… Also loads xparse, which provides \NewDocumentCommand and similar commands intended as replacement of \newcommand in LaTeX3 for defining commands (see https://tex.stackexchange.com/q/98152 and https://github.com/latex3/latex2e/issues/89).
 	\usepackage{xpatch}
 %ntheorem doc says: “empheq provides an enhanced vertical placement of the endmarks”; must be loaded before ntheorem. Loads the mathtools package, which loads and fixes some bugs in amsmath and provides \DeclarePairedDelimiter. amsmath is considered a basic, mandatory package nowadays (Grätzer, More Math Into LaTeX).
 	\usepackage[ntheorem]{empheq}
@@ -67,7 +75,6 @@
 	\makeatother%
 
 %Language options ([french, english]) should be on the document level (last is main); except with tikzposter: put [french, english] options next to \usepackage{babel} to avoid warning. beamer uses the \translate command for the appendix: omitting babel results in a warning, see https://github.com/josephwright/beamer/issues/449. Babel also seems required for \refname.
-%TODO poster!
 	\iftoggle{LCpres}{
 		\usepackage{babel}
 	}{
@@ -100,12 +107,12 @@
 }
 \makeatother
 %urlbordercolor is used both for \url and \doi, which I think shouldn’t be colored, and for \href, thus might want to color manually when required. Requires xcolor.
-	\newcommand{\hrefblue}[2]{\textcolor{blue}{\href{#1}{#2}}}
+	\NewDocumentCommand{\hrefblue}{mm}{\textcolor{blue}{\href{#1}{#2}}}
 %hyperref doc says: “Package bookmark replaces hyperref’s bookmark organization by a new algorithm (...) Therefore I recommend using this package”.
 	\usepackage{bookmark}
 %Need to invoke hyperref explicitly to link to line numbers: \hyperlink{lintarget:mylinelabel}{\ref*{lin:mylinelabel}}, with \ref* to disable automatic link. Also see https://tex.stackexchange.com/q/428656 for referencing lines from another document.
 	%\usepackage{lineno}
-	%\newcommand{\llabel}[1]{\hypertarget{lintarget:#1}{}\linelabel{lin:#1}}
+	%\NewDocumentCommand{\llabel}{m}{\hypertarget{lintarget:#1}{}\linelabel{lin:#1}}
 	%\setlength\linenumbersep{9mm}
 %For complex authors blocks. Seems like authblk wants to be later than hyperref, but sooner than silence. See https://tex.stackexchange.com/q/475513 for the patch to hyperref pdfauthor.
 	\ExplSyntaxOn
@@ -159,7 +166,7 @@
 %“The \boldsymbol command is obtained preferably by using the bm package, which provides a newer, more powerful version than the one provided by the amsmath package. Generally speaking, it is ill-advised to apply \boldsymbol to more than one symbol at a time.” — AMS Short math guide. “If no bold font appears to be available for a particular symbol, \bm will use ‘poor man’s bold’” — bm. It is “best to load the package after any packages that define new symbol fonts” – bm. bm defines \boldsymbol as synonym to \bm. \boldmath accesses the correct font if it exists; it is used by \bm when appropriate. See https://tex.stackexchange.com/a/10643 and https://github.com/latex3/latex2e/issues/71 for some difficulties with \bm.
 	\usepackage{bm}
 	\nottoggle{LCpres}{
-	%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle. Option standard loads amssymb and latexsym. Must be loaded after amsmath (from ntheorem doc). From cleveref doc, “ntheorem is fully supported and even recommended”; says to load cleveref after ntheorem. When used with tikzposter, warns about size substitution for the lasy (latexsym) font when using \url, because ntheorem loads latexsym; relatedly (but not directly related to ntheorem), size substitution warning with the cmex font happens when loading amsmath and using \url.%TODO poster
+	%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle. Option standard loads amssymb and latexsym. Must be loaded after amsmath (from ntheorem doc). From cleveref doc, “ntheorem is fully supported and even recommended”; says to load cleveref after ntheorem. When used with tikzposter, warns about size substitution for the lasy (latexsym) font when using \url, because ntheorem loads latexsym; relatedly (but not directly related to ntheorem), size substitution warning with the cmex font happens when loading amsmath and using \url.
 		\usepackage[thmmarks, amsmath, standard, hyperref]{ntheorem}
 		%empheq doc says to do this after loading ntheorem
 		\usetagform{default}

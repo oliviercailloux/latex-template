@@ -20,6 +20,7 @@
 %show at sign if present in input
 \newbool{refAPIShowAt}
 \newbool{refAPIShowPackage}
+\newbool{refAPIShowField}
 \newbool{refAPIShowMethod}
 \newbool{refAPIShowParameters}
 \pgfkeys{
@@ -29,6 +30,7 @@
 	formatTypewriter/.is if = refAPIFormatTypewriter,
 	showAt/.is if = refAPIShowAt,
 	showPackage/.is if = refAPIShowPackage,
+	showField/.is if = refAPIShowField,
 	showMethod/.is if = refAPIShowMethod,
 	showParameters/.is if = refAPIShowParameters,
 	default/.style = {
@@ -36,6 +38,7 @@
 		formatTypewriter = true,
 		showAt = true,
 		showPackage = false,
+		showField = true,
 		showMethod = true,
 		showParameters = false,
 	},
@@ -43,7 +46,8 @@
 
 %Thx https://tex.stackexchange.com/a/34318
 %TODO URL without module?
-%TODO define the following refAPI macros. Module (before unique / or empty); Method (after unique # or empty); Field (after unique # and before unique ( or empty if no # or after unique # if no (); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
+%TODO Refine into MethodWithParameters, MethodWithParametersWithoutSpaces and MethodWithoutParameters.
+%Approach: define the following refAPI macros. AtSign (starts with at); Module (before unique / or empty); Method (after unique # if has ( or empty); Field (after unique # if no ( or empty if no #); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
 %OLD - Defines: \refAPIFQName (before #) ; \refAPIFieldFull (after #) ; \refAPIFieldShort (after # and before -) ; \refAPIPackageSlashes (FQName before / with slashes instead of dots) ; \refAPIClass (FQName after /)
 %{java.base/java.time.zone.ZoneOffsetTransition} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html
 %{java.base/java.time.zone.ZoneOffsetTransition\#getDateTimeAfter()} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html#getDateTimeAfter()
@@ -51,72 +55,141 @@
 %{java.base/java.lang.String\#substring(int, int)} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#substring(int,int) NB need to drop space in parameter
 %{@java.base/java.lang.annotation.Documented} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/annotation/Documented.html
 %{@java.base/java.lang.SuppressWarnings\#value()} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/SuppressWarnings.html#value()
-%The main argument specifies everything needed to build the URL. From this, a default appearance is built, which can be changed with keys. Must be able to: hide @ sign; hide method; hide parameters; hide package; replace everything with provided display string; display in texttt mode or not?.
+%The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. From this, a default appearance is built, which can be changed with keys. Must be able to: hide @ sign; hide method; hide parameters; hide package; replace everything with provided display string; display in texttt mode or not?.
+%Shows at iff showAt AND main argument starts with @
 \newcommand{\jrefAPI}[2][]{%
 	\pgfkeys{/refAPI/.cd, default, #1}%
+	\IfBeginWith{#2}{@}{%
+		\edef\refAPIAtSign{@}%
+		\StrBehind{#2}{@}[\refAPIWithoutAt]%
+	}{%
+		\edef\refAPIAtSign{}%
+		\edef\refAPIWithoutAt{#2}%
+	}%
+	\IfSubStr{#2}{/}{%
+		\StrBefore{\refAPIWithoutAt}{/}[\refAPIModule]%
+	}{%
+		\edef\refAPIModule{}%
+	}%
 	\IfSubStr{#2}{\#}{%
-		\StrBefore{#2}{\#}[\refAPIFQName]%
-		\StrBehind{#2}{\#}[\refAPIFieldFull]%
+		\StrBehind{#2}{\#}[\refAPIAfterSharp]%
+		\IfSubStr{\refAPIAfterSharp}{(}{%
+			\StrBehind{#2}{\#}[\refAPIMethodWithParameters]%
+		}{%
+			\edef\refAPIMethodWithParameters{}%
+		}%
 	}{%
-		\edef\refAPIFQName{#2}%
-		\edef\refAPIFieldFull{}%
+		\edef\refAPIMethodWithParameters{}%
 	}%
-	\IfSubStr{\refAPIFieldFull}{-}{%
-		\StrBefore{\refAPIFieldFull}{-}[\refAPIFieldShort]%
+	\StrSubstitute{\refAPIMethodWithParameters}{ }{}[\refAPIMethodWithParametersWithoutSpaces]%
+	\StrBefore{\refAPIMethodWithParameters}{(}[\refAPIMethodWithoutParameters]%
+	\IfSubStr{#2}{\#}{%
+		\StrBehind{#2}{\#}[\refAPIAfterSharp]%
+		\IfSubStr{\refAPIAfterSharp}{(}{%
+			\edef\refAPIField{}%
+		}{%
+			\StrBehind{#2}{\#}[\refAPIField]%
+		}%
 	}{%
-		\edef\refAPIFieldShort{\refAPIFieldFull}%
+		\edef\refAPIField{}%
 	}%
-	\StrBefore{\refAPIFQName}{/}[\refAPIPackage]%
-	\StrBehind{\refAPIFQName}{/}[\refAPIClass]%
-	\StrSubstitute{\refAPIPackage}{.}{/}[\refAPIPackageSlashes]%
-	\ifbool{refAPIIsAnnotation}{%
-		\edef\refAPIAnnot{@}%
+	\IfSubStr{#2}{/}{%
+		\StrBehind{#2}{/}[\refAPIAfterSlash]%
+		\IfSubStr{\refAPIAfterSlash}{\#}{%
+			\StrBefore{\refAPIAfterSlash}{\#}[\refAPIFQName]%
+		}{%
+			\edef\refAPIFQName{\refAPIAfterSlash}%
+		}%
 	}{%
-		\edef\refAPIAnnot{}%
+		\IfSubStr{#2}{\#}{%
+			\StrBefore{\refAPIWithoutAt}{\#}[\refAPIFQName]%
+		}{%
+			\edef\refAPIFQName{\refAPIWithoutAt}%
+		}%
 	}%
-	\IfEq{\refAPIFieldFull}{}{%
-		{%
-			\ifbool{refAPIDisplayFull}{%
-				\refAPIPackage%
+	\StrSubstitute{\refAPIFQName}{.}{/}[\refAPIFQNameSlashes]%
+	\IfSubStr{#2}{\#}{%
+		\StrBefore{\refAPIWithoutAt}{\#}[\refAPIBeforeSharp]%
+		\edef\refAPIClass{\extractlast{\refAPIBeforeSharp}}%
+	}{%
+		\edef\refAPIClass{\extractlast{#2}}%
+	}%
+	%
+	%\refAPIPrintAll%
+	%
+	\edef\refAPITarget{\refAPIBaseUrl}%
+	\IfEq{\refAPIModule}{}{%
+	}{%
+		\appto\refAPITarget{\refAPIModule}%
+		\appto\refAPITarget{/}%
+	}%
+	\appto\refAPITarget{\refAPIFQNameSlashes}%
+	\appto\refAPITarget{.html}%
+	\IfEq{\refAPIField}{}{%
+	}{%
+		\appto\refAPITarget{\#\refAPIField}%
+	}%
+	\IfEq{\refAPIMethodWithParametersWithoutSpaces}{}{%
+	}{%
+		\IfEq{\refAPIParametersStyle}{hyphen}{%
+			\StrSubstitute{\refAPIMethodWithParametersWithoutSpaces}{(}{-}[\refAPIMethodWithParametersWithoutSpacesWithHyphens]%
+			\StrSubstitute{\refAPIMethodWithParametersWithoutSpacesWithHyphens}{,}{-}[\refAPIMethodWithParametersWithoutSpacesWithHyphens]%
+			\StrSubstitute{\refAPIMethodWithParametersWithoutSpacesWithHyphens}{)}{-}[\refAPIMethodWithParametersWithoutSpacesWithHyphens]%
+			\appto\refAPITarget{\#\refAPIMethodWithParametersWithoutSpacesWithHyphens}%
+		}{%
+			\appto\refAPITarget{\#\refAPIMethodWithParametersWithoutSpaces}%
+		}%
+	}%
+	%
+	\edef\refAPILinkText{}%
+	\ifbool{refAPIShowAt}{%
+		\appto\refAPILinkText{\refAPIAtSign}%
+	}{%
+	}%
+	\ifbool{refAPIShowPackage}{%
+		\appto\refAPILinkText{\refAPIFQName}%
+	}{%
+		\appto\refAPILinkText{\refAPIClass}%
+	}%
+	\ifbool{refAPIShowField}{%
+		\IfEq{\refAPIField}{}{%
+		}{%
+			\appto\refAPILinkText{\#\refAPIField}%
+		}%
+	}{%
+	}%
+	\ifbool{refAPIShowMethod}{%
+		\ifbool{refAPIShowParameters}{%
+			\IfEq{\refAPIMethodWithParameters}{}{%
 			}{%
+				\appto\refAPILinkText{\#\refAPIMethodWithParameters}%
 			}%
-			\refAPIPrefix{%
-				\href{%
-					\refAPIBaseUrl\refAPIPackageSlashes/\refAPIClass.html%
-				}{%
-					\refAPIAnnot\refAPIClass%
-				}%
+		}{%
+			\IfEq{\refAPIMethodWithoutParameters}{}{%
+			}{%
+				\appto\refAPILinkText{\#\refAPIMethodWithoutParameters}%
 			}%
-			\refAPISuffix%
 		}%
 	}{%
-		{%
-			\refAPIPrefix{%
-				\ifbool{refAPIOmitFQName}{%
-				}{%
-					\refAPIAnnot\refAPIClass.%
-				}%
-				\href{%
-					\refAPIBaseUrl\refAPIPackageSlashes/\refAPIClass.html\#\refAPIFieldFull%
-				}{%
-					\refAPIFieldShort%
-				}%
-			}%
-			\refAPISuffix%
-		}%
 	}%
-	\refAPIPrintAll%
+	%	
+	\href{\refAPITarget}{\refAPILinkText}%
 }
 
 \newcommand{\refAPIPrintAll}{%
 	\begin{description}
 		\item[BaseUrl] \foreach \sfx in {BaseUrl}{\csname refAPI\sfx\endcsname}
-		\foreach \sfx in {FQName, FieldFull, FieldShort, Package, Class, PackageSlashes}{\item[\sfx] \csname refAPI\sfx\endcsname}
+		\foreach \sfx in {AtSign, Module, MethodWithParameters, MethodWithParametersWithoutSpaces, MethodWithoutParameters, Field, FQName, FQNameSlashes, Class, ParametersStyle}{\item[\sfx] \csname refAPI\sfx\endcsname}
 	\end{description}%
 }
 
+\DeclareExpandableDocumentCommand{\refAPIBaseUrl}{}{https://docs.oracle.com/javase/8/docs/api/}
+\DeclareExpandableDocumentCommand{\refAPIParametersStyle}{}{hyphen}
+%\DeclareExpandableDocumentCommand{\refAPIBaseUrl}{}{https://docs.oracle.com/en/java/javase/12/docs/api/}
+%\DeclareExpandableDocumentCommand{\refAPIParametersStyle}{}{parenthesis}
 %\newcommand{\jeeref}[2][]{\jrefAPI[#1, base url = https://docs.oracle.com/javaee/7/api/]{#2}}
-\newcommand{\jseref}[2][]{\jrefAPI[#1, base url = https://docs.oracle.com/javase/8/docs/api/]{#2}}
+\newcommand{\jseref}[2][]{\jrefAPI[#1]{#2}}
 %Standard HTML RenderKit : https://docs.oracle.com/javaee/7/javaserver-faces-2-2/renderkitdocs/HTML_BASIC/javax.faces.Inputjavax.faces.Text.html
 %\newcommand{\jsftag}[2][]{\jrefAPI{base url = https://docs.oracle.com/javaee/7/javaserver-faces-2-2/vdldocs-facelets/, full, prefix=:, #1}}
+
 

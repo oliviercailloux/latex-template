@@ -1,4 +1,4 @@
-\newcommand{\tikzmark}[1]{%
+\NewDocumentCommand{\tikzmark}{m}{%
 	\tikz[overlay, remember picture, baseline=(#1.base)] \node (#1) {};%
 }
 

@@ -5,8 +5,7 @@
 \input{preamble/math_basics}
 \input{preamble/math_mine}
 %\input{preamble/draw}
-%\input{preamble/acronyms}
-%\input{preamble/refAPIcmds}
+\input{preamble/refAPIcmds}
 
 %I find these settings useful in draft mode. Should be removed for final versions.
 	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
@@ -36,11 +35,27 @@
 \section{Introduction}
 \label{sec:intro}
 
-Content. ⇒ end. $⇒$
+\DeclareExpandableDocumentCommand{\refAPIBaseUrl}{}{https://docs.oracle.com/javase/8/docs/api/}
+\DeclareExpandableDocumentCommand{\refAPIParametersStyle}{}{hyphen}
+\jrefAPI{java.util.Random} \jrefAPI{java.util.Random\#ints()} \jrefAPI{java.util.Random\#doubles(double, double)} \jrefAPI{@java.lang.SuppressWarnings} \jrefAPI{@java.lang.SuppressWarnings\#value()}  \jrefAPI{java.lang.Math\#PI}
 
-%\jrefAPI[base url = https://docs.oracle.com/javase/8/docs/api/]{bef\#aft}
+\DeclareExpandableDocumentCommand{\refAPIBaseUrl}{}{https://docs.oracle.com/en/java/javase/12/docs/api/}
+\DeclareExpandableDocumentCommand{\refAPIParametersStyle}{}{parenthesis}
+\jrefAPI{java.base/java.util.Random} \jrefAPI{java.base/java.util.Random\#ints()} \jrefAPI{java.base/java.util.Random\#doubles(double, double)} \jrefAPI{@java.base/java.lang.SuppressWarnings} \jrefAPI{@java.base/java.lang.SuppressWarnings\#value()}  \jrefAPI{java.base/java.lang.Math\#PI}
 
-%\extractlast{aa/bc/dd.ee.ff}
+java.net.http/java/net/http/HttpResponse.BodyHandler.html
+\jrefAPI{
+https://javadoc.io/static/javax.ws.rs/javax.ws.rs-api/2.1/javax/ws/rs/core/Response.Status.html#ACCEPTED
+
+\DeclareExpandableDocumentCommand{\refAPIBaseUrl}{}{https://javadoc.io/static/javax.ws.rs/javax.ws.rs-api/2.1/}
+\jrefAPI{javax.ws.rs.core.Response.Status.html\#ACCEPTED}
+
+%{java.base/java.time.zone.ZoneOffsetTransition} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html
+%{java.base/java.time.zone.ZoneOffsetTransition\#getDateTimeAfter()} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html#getDateTimeAfter()
+%{java.base/java.time.zone.ZoneOffsetTransition\#compareTo(java.time.zone.ZoneOffsetTransition)} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/zone/ZoneOffsetTransition.html#compareTo(java.time.zone.ZoneOffsetTransition)
+%{java.base/java.lang.String\#substring(int, int)} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#substring(int,int) NB need to drop space in parameter
+%{@java.base/java.lang.annotation.Documented} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/annotation/Documented.html
+%{@java.base/java.lang.SuppressWarnings\#value()} ⇒ https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/SuppressWarnings.html#value()
 
 %\bibliography{bibl}
 

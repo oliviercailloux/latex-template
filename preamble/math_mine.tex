@@ -1,14 +1,14 @@
 %Decision Theory (MCDA and SC)
-\newcommand{\allalts}{\mathscr{A}}
-\newcommand{\allcrits}{\mathscr{C}}
-\newcommand{\alts}{A}
-\newcommand{\dm}{i}
-\newcommand{\allF}{\mathscr{F}}
-\newcommand{\allvoters}{\mathscr{N}}
-\newcommand{\voters}{N}
-\newcommand{\allprofs}{\boldsymbol{\mathcal{R}}}
-\newcommand{\prof}{\boldsymbol{R}}
-\newcommand{\linors}{\mathscr{L}(\allalts)}
+\NewDocumentCommand{\allalts}{}{\mathscr{A}}
+\NewDocumentCommand{\allcrits}{}{\mathscr{C}}
+\NewDocumentCommand{\alts}{}{A}
+\NewDocumentCommand{\dm}{}{i}
+\NewDocumentCommand{\allF}{}{\mathscr{F}}
+\NewDocumentCommand{\allvoters}{}{\mathscr{N}}
+\NewDocumentCommand{\voters}{}{N}
+\NewDocumentCommand{\allprofs}{}{\boldsymbol{\mathcal{R}}}
+\NewDocumentCommand{\prof}{}{\boldsymbol{R}}
+\NewDocumentCommand{\linors}{}{\mathscr{L}(\allalts)}
 %Thanks to https://tex.stackexchange.com/q/154549
 	%\makeatletter
 	%\def\@myRgood@#1#2{\mathrel{R^X_{#2}}}
@@ -16,19 +16,19 @@
 	%\makeatother
 
 %Deliberated Judgment
-\newcommand{\allargs}{S^*}
-\newcommand{\args}{S}
-\newcommand{\ar}{s}
-\newcommand{\ileadsto}{⇝}
-\newcommand{\ibeatse}{⊳_\exists}
-\newcommand{\nibeatse}{⋫_\exists}
-\newcommand{\ibeatsst}{⊳_\forall}
-\newcommand{\nibeatsst}{⋫_\forall}
-\newcommand{\mleadsto}[1][\eta]{⇝_{#1}}
-\newcommand{\mbeats}[1][\eta]{⊳_{#1}}
-\newcommand{\ibeatseinv}{⊳_\exists^{-1}}
+\NewDocumentCommand{\allargs}{}{S^*}
+\NewDocumentCommand{\args}{}{S}
+\NewDocumentCommand{\ar}{}{s}
+\NewDocumentCommand{\ileadsto}{}{⇝}
+\NewDocumentCommand{\ibeatse}{}{⊳_\exists}
+\NewDocumentCommand{\nibeatse}{}{⋫_\exists}
+\NewDocumentCommand{\ibeatsst}{}{⊳_\forall}
+\NewDocumentCommand{\nibeatsst}{}{⋫_\forall}
+\NewDocumentCommand{\mleadsto}{O{\eta}}{⇝_{#1}}
+\NewDocumentCommand{\mbeats}{O{\eta}}{⊳_{#1}}
+\NewDocumentCommand{\ibeatseinv}{}{⊳_\exists^{-1}}
 
 %Logic
-\newcommand{\ltru}{\texttt{T}}
-\newcommand{\lfal}{\texttt{F}}
+\NewDocumentCommand{\ltru}{}{\texttt{T}}
+\NewDocumentCommand{\lfal}{}{\texttt{F}}
 

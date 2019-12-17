@@ -1,12 +1,12 @@
 %Requires package xcolor.
-\newcommand{\commentOC}[1]{\textcolor{blue}{\small$\big[$OC: #1$\big]$}}
+\NewDocumentCommand{\commentOC}{m}{\textcolor{blue}{\small$\big[$OC: #1$\big]$}}
 %Requires package babel and option [french]. According to babel doc, need two braces around \selectlanguage to make the changes really local.
-\newcommand{\commentOCf}[1]{\textcolor{blue}{{\small\selectlanguage{french}$\big[$OC : #1$\big]$}}}
-\newcommand{\commentYM}[1]{\textcolor{red}{\small$\big[$YM: #1$\big]$}}
-\newcommand{\commentYMf}[1]{\textcolor{red}{{\small\selectlanguage{french}$\big[$YM : #1$\big]$}}}
+\NewDocumentCommand{\commentOCf}{m}{\textcolor{blue}{{\small\selectlanguage{french}$\big[$OC : #1$\big]$}}}
+\NewDocumentCommand{\commentYM}{m}{\textcolor{red}{\small$\big[$YM: #1$\big]$}}
+\NewDocumentCommand{\commentYMf}{m}{\textcolor{red}{{\small\selectlanguage{french}$\big[$YM : #1$\big]$}}}
 
 \bibliographystyle{abbrvnat}
-\newcommand{\possessivecite}[1]{\citeauthor{#1}’s \citeyearpar{#1}}
+\NewDocumentCommand{\possessivecite}{m}{\citeauthor{#1}’s \citeyearpar{#1}}
 
 %https://tex.stackexchange.com/a/467188, https://tex.stackexchange.com/a/36088 - uncomment if one of those symbols is used.
 %\DeclareFontFamily{U} {MnSymbolD}{}
