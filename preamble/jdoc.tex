@@ -48,7 +48,6 @@
 %Approach: define the following jdocRef macros. AtSign (starts with at); Module (before unique / or empty); Method (after unique # if has ( or empty); Field (after unique # if no ( or empty if no #); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
 %The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. The default appearance can be changed with keys.
 \newcommand{\jdocRef}[2][]{%
-	\shorthandoff{:}%
 	\pgfkeys{/jdocRef/.cd, default, #1}%
 	\edef\jdocRefFull{#2}%
 	\IfBeginWith{#2}{@}{%
@@ -74,10 +73,10 @@
 		\edef\jdocRefClassAndRest{\jdocRefAfterFirstSlash}%
 	}%
 	\StrSubstitute{\jdocRefPackage}{.}{/}[\jdocRefPackageSlashes]%
-	\IfSubStr{#2}{::}{%
-		\StrBehind{#2}{::}[\jdocRefAfterSharp]%
+	\IfSubStr{#2}{\#}{%
+		\StrBehind{#2}{\#}[\jdocRefAfterSharp]%
 		\IfSubStr{\jdocRefAfterSharp}{(}{%
-			\StrBehind{#2}{::}[\jdocRefMethodWithParameters]%
+			\StrBehind{#2}{\#}[\jdocRefMethodWithParameters]%
 		}{%
 			\edef\jdocRefMethodWithParameters{}%
 		}%
@@ -86,18 +85,18 @@
 	}%
 	\StrSubstitute{\jdocRefMethodWithParameters}{ }{}[\jdocRefMethodWithParametersWithoutSpaces]%
 	\StrBefore{\jdocRefMethodWithParameters}{(}[\jdocRefMethodWithoutParameters]%
-	\IfSubStr{#2}{::}{%
-		\StrBehind{#2}{::}[\jdocRefAfterSharp]%
+	\IfSubStr{#2}{\#}{%
+		\StrBehind{#2}{\#}[\jdocRefAfterSharp]%
 		\IfSubStr{\jdocRefAfterSharp}{(}{%
 			\edef\jdocRefField{}%
 		}{%
-			\StrBehind{#2}{::}[\jdocRefField]%
+			\StrBehind{#2}{\#}[\jdocRefField]%
 		}%
 	}{%
 		\edef\jdocRefField{}%
 	}%
-	\IfSubStr{\jdocRefClassAndRest}{::}{%
-		\StrBefore{\jdocRefClassAndRest}{::}[\jdocRefClass]%
+	\IfSubStr{\jdocRefClassAndRest}{\#}{%
+		\StrBefore{\jdocRefClassAndRest}{\#}[\jdocRefClass]%
 	}{%
 		\edef\jdocRefClass{\jdocRefClassAndRest}%
 	}%
@@ -141,7 +140,7 @@
 	\ifbool{jdocRefShowField}{%
 		\IfEq{\jdocRefField}{}{%
 		}{%
-			\appto\jdocRefLinkText{::\jdocRefField}%
+			\appto\jdocRefLinkText{\#\jdocRefField}%
 		}%
 	}{%
 	}%
@@ -149,7 +148,7 @@
 		\ifbool{jdocRefShowParameters}{%
 			\IfEq{\jdocRefMethodWithParameters}{}{%
 			}{%
-				\appto\jdocRefLinkText{::\jdocRefMethodWithoutParameters}%
+				\appto\jdocRefLinkText{\#\jdocRefMethodWithoutParameters}%
 				\appto\jdocRefLinkText{(}%
 				\appto\jdocRefLinkText{\jdocRefParametersText}%
 				\appto\jdocRefLinkText{)}%
@@ -157,7 +156,7 @@
 		}{%
 			\IfEq{\jdocRefMethodWithoutParameters}{}{%
 			}{%
-				\appto\jdocRefLinkText{::\jdocRefMethodWithoutParameters}%
+				\appto\jdocRefLinkText{\#\jdocRefMethodWithoutParameters}%
 				\appto\jdocRefLinkText{(}%
 				\appto\jdocRefLinkText{)}%
 			}%
@@ -174,7 +173,6 @@
 	}{%
 		\href{\jdocRefTarget}{\jdocRefFullText}%
 	}%
-	\shorthandon{:}%
 }
 
 \newcommand{\jdocRefPrintAll}{%

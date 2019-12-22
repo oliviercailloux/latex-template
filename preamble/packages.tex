@@ -74,10 +74,10 @@
 	\makeatother%
 
 %Language options ([french, english]) should be on the document level (last is main); except with tikzposter: put [french, english] options next to \usepackage{babel} to avoid warning. beamer uses the \translate command for the appendix: omitting babel results in a warning, see https://github.com/josephwright/beamer/issues/449. Babel also seems required for \refname.
-	%\iftoggle{LCpres}{
+	\iftoggle{LCpres}{
 		\usepackage{babel}
-	%}{
-	%}
+	}{
+	}
 	%\frenchbsetup{AutoSpacePunctuation=false}
 %listings (1.7) does not allow multi-byte encodings. listingsutf8 works around this only for characters that can be represented in a known one-byte encoding and only for \lstinputlisting. Other workarounds: use literate mechanism; or escape to LaTeX (but breaks alignment).
 	%\usepackage{listings}
