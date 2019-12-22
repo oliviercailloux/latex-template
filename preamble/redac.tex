@@ -119,7 +119,7 @@
 \newunicodechar{⊀}{\nprec}
 %2281 Does Not Succeed
 \newunicodechar{⊁}{\nsucc}
-%22B2 Normal Subgroup Of – \triangleleft is too small compared to \trianglelefteq and the like; \lhd seems equivalent to \vartriangleleft from amssymb
+%22B2 Normal Subgroup Of – using \vartriangleleft from amsfonts, which goes well with \trianglelefteq, \ntriangleright, and so on, also from amsfonts; another possibility is \lhd from latexsym, which seems visually equivalent to \vartriangleleft from amsfonts; latexsym also has ⊴=\unlhd, but doesn’t have a symbol for ⊴. Other related symbols: \triangleleft from latesym package is too small; fdsymbol provides \triangleleft=\medtriangleleft and \vartriangleleft=\smalltriangleleft; MnSymbol provides \medtriangleleft and \vartriangleleft=\lessclosed=\lhd which are smaller than \vartriangleleft from amsfont; \vartriangleleft from mathabx (p. 67), looks different (wider); also \vartriangleleft from boisik (p. 69) looks still different; \vartriangleleft=\lhd from stix are smaller. Oddly enough, \triangleright appears as the LMMathItalic12-Regular font whereas \rhd appears as LASY10 and \vartriangleright appears as MSAM10.
 \newunicodechar{⊲}{\vartriangleleft}
 %22B3 Contains as Normal Subgroup (also: 25B7 White right-pointing triangle or 25B9 White right-pointing small triangle)
 \newunicodechar{⊳}{\vartriangleright}
@@ -131,7 +131,7 @@
 \newunicodechar{⋈}{\bowtie}
 %22EA Not Normal Subgroup Of
 \newunicodechar{⋪}{\ntriangleleft}
-%22EB Does Not Contain As Normal Subgroup – TODO say that it requires amssymb (or amsfont?); check why \triangleright is used in formal instead of \rhd.
+%22EB Does Not Contain As Normal Subgroup
 \newunicodechar{⋫}{\ntriangleright}
 %22EC Not Normal Subgroup of or Equal To
 \newunicodechar{⋬}{\ntrianglelefteq}
@@ -151,7 +151,7 @@
 \newunicodechar{〚}{\textlbrackdbl}
 %301B Right White Square Bracket
 \newunicodechar{〛}{\textrbrackdbl}
-%→ is defined by default as \textrightarrow, which is invalid in math mode. Same thing for the three other commands. I redefine those four using \DeclareUnicodeCharacter instead of \newunicodechar because the latter warns about the previous definition.
+%→ is defined by default as \textrightarrow, which is invalid in math mode. Same thing for the three other commands. Using \DeclareUnicodeCharacter instead of \newunicodechar because the latter warns about the previous definition.
 %→ Rightwards Arrow
 \DeclareUnicodeCharacter{2192}{\ifmmode\rightarrow\else\textrightarrow\fi}
 %¬ Not Sign

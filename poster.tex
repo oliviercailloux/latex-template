@@ -3,7 +3,7 @@
 \documentclass[blockverticalspace=3cm]{tikzposter}
 %\usepackage{latexsym}
 %\usepackage{url}%\texttt ok but \url with {amsmath} produces warning Font shape `OMX/cmex/m/n' in size <29.86> not available size <24.88> substituted on input line 41. And {latexsym} instead produces Font shape `U/lasy/m/n' in size <29.86> not available size <24.88> substituted on input line 40. Ask which one I should load (first?)
-%\input{preamble/packages}
+\input{preamble/packages}
 %\input{preamble/redac}
 %\input{preamble/math_basics}
 %\input{preamble/math_mine}
@@ -16,6 +16,8 @@
 \author{Olivier Cailloux}
 
 \begin{document}
+%I should switch to beamerposter. Much more recent, switch to 1.13, 2018/04/23, https://github.com/deselaers/latex-beamerposter/commit/a00696fd6130f7a553058ffebd39b710b8bd3787 (doc says 2008 but it’s just the doc that hasn’t been updated, I think). Seems the best solution according to https://tex.stackexchange.com/questions/341/how-to-create-posters-using-latex. Explanations and comparisons, recent, seems very useful: https://github.com/mamueller/Markus-LaTeX-poster-guide/blob/master/README.md. Consider watching How to create a better research poster in less time (including templates), https://www.youtube.com/watch?v=1RwJbhkCA58 (and consider betterposter latex template).
+
 %Logs an information about a nullfont, I ignore why, but it doesn’t seem to produce problems so I have not investigated. See https://tex.stackexchange.com/questions/121154/tikzpicture-options-causing-there-is-no-in-font-nullfont?noredirect=1&lq=1#comment270627_121157
 \maketitle[titletotopverticalspace=10cm]
 
