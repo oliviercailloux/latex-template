@@ -6,7 +6,7 @@
 \NewDocumentCommand{\commentYMf}{m}{\textcolor{red}{{\small\selectlanguage{french}$\big[$YM : #1$\big]$}}}
 
 \bibliographystyle{abbrvnat}
-\NewDocumentCommand{\possessivecite}{m}{\citeauthor{#1}’s \citeyearpar{#1}}
+\NewDocumentCommand{\possessivecite}{mO{}}{\citeauthor{#1}’s \citeyearpar[#2]{#1}}
 
 %https://tex.stackexchange.com/a/467188, https://tex.stackexchange.com/a/36088 - uncomment if one of those symbols is used.
 %\DeclareFontFamily{U} {MnSymbolD}{}
@@ -160,4 +160,7 @@
 \DeclareUnicodeCharacter{2026}{\ifmmode\dots\else\textellipsis\fi}
 %× Multiplication Sign
 \DeclareUnicodeCharacter{00D7}{\ifmmode\times\else\texttimes\fi}
+%Permits to really obtain a straight quote when typing a straight quote; potentially dangerous, see https://tex.stackexchange.com/a/521999
+\catcode`\'=\active
+\DeclareUnicodeCharacter{0027}{\ifmmode{^{\prime}}\else\textquotesingle\fi}
 

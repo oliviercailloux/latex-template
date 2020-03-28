@@ -44,9 +44,10 @@
 	},
 }
 
-%Thx https://tex.stackexchange.com/a/34318. TODO read https://tex.stackexchange.com/a/161982 .
+%Thx https://tex.stackexchange.com/a/34318.
 %Approach: define the following jdocRef macros. AtSign (starts with at); Module (before unique / or empty); Method (after unique # if has ( or empty); Field (after unique # if no ( or empty if no #); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
 %The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. The default appearance can be changed with keys.
+%Notation: I considered using double colon to separate class from method (https://stackoverflow.com/a/59418704), and writing parameters as, for example, Random::doubles(origin: double, bound: double), following UML notation. But to be coherent, must then use the double colon to separate package elements and class from inner classes, for example, java::util::Random and HTML::Attribute::HEIGHT, which is not readable. Seems more reasonable to follow closely the Javadoc notation (after all, it’s Java classes that we refer to, not language-neutral classes). The only addition being when I need the parameter names, which I write as Random#doubles(double origin, double bound).
 \newcommand{\jdocRef}[2][]{%
 	\pgfkeys{/jdocRef/.cd, default, #1}%
 	\edef\jdocRefFull{#2}%
@@ -193,6 +194,8 @@
 
 \DeclareExpandableDocumentCommand{\jdocRefBaseUrl}{}{\jdocRefTwelveBaseUrl}
 \DeclareExpandableDocumentCommand{\jdocRefParametersStyle}{}{parenthesis}
+
+%TODO Let travis compile LaTeX. Make sure it fails iff compilation fails. Take https://tex.stackexchange.com/a/48613 (perhaps consider https://tex.stackexchange.com/questions/12067/whats-the-folk-lore-on-automatic-testing-of-tex-programming) for writing integration tests. In a test folder, define a test .tex file. Read https://tex.stackexchange.com/a/161982 and improve code.
 
 %Standard HTML RenderKit : https://docs.oracle.com/javaee/7/javaserver-faces-2-2/renderkitdocs/HTML_BASIC/javax.faces.Inputjavax.faces.Text.html
 %\newcommand{\jsftag}[2][]{\jjdocRef{base url = https://docs.oracle.com/javaee/7/javaserver-faces-2-2/vdldocs-facelets/, full, prefix=:, #1}}
