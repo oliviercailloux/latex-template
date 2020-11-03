@@ -6,6 +6,7 @@
 *.fls
 *.log
 *.synctex.gz
+*.thm
 #Pres
 *.nav
 *.out

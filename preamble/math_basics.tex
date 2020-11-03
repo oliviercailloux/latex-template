@@ -18,7 +18,8 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
-%We want the straight form of \phi for mathematics, as recommended in UTR #25: Unicode support for mathematics, and thus use \phi for the mathematical symbol and not \varphi; and similarly \epsilon is preferred to \varepsilon for the mathematical symbol.
+%UTR #25: Unicode support for mathematics recommend to use the straight form of phi (by default, given by \phi) rather than the curly one (by default, given by \varphi), and thus use \phi for the mathematical symbol and not \varphi. I however prefer the curly form because the straight form is too easy to mix up with the symbol for empty set.
+\let\phi\varphi
 
 %The amssymb solution.
 %\NewDocumentCommand{\restr}{mm}{{#1}_{\restriction #2}}
