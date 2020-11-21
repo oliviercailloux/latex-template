@@ -11,8 +11,8 @@
 	\usepackage{newunicodechar}
 %Text Companion fonts, much used together with CM-like fonts. Provides \texteuro and commands for text mode characters such as \textminus, \textrightarrow, \textlbrackdbl.
 	\usepackage{textcomp}
-%St Mary’s Road symbol font, used for ⟦ = \llbracket.
-	%\usepackage{stmaryrd}
+%St Mary’s Road symbol font, used for ⟦ = \llbracket. The \SetSymbolFont avoids spurious warnings, but also some valid ones, see https://tex.stackexchange.com/a/106719/.
+	%\usepackage{stmaryrd}\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
 %Solves bug in lmodern, https://tex.stackexchange.com/a/261188; probably useful only for unusually big font sizes; and probably better to use exscale instead. Note that the authors of exscale write against this trick.
 	%\DeclareFontShape{OMX}{cmex}{m}{n}{
 		%<-7.5> cmex7
@@ -21,7 +21,7 @@
 		%<9.5-> cmex10
 	%}{}
 	%\SetSymbolFont{largesymbols}{normal}{OMX}{cmex}{m}{n}
-%More symbols (such as \sum) available in bold version, see https://github.com/latex3/latex2e/issues/71.
+%More symbols (such as \sum) available in bold version, see https://github.com/latex3/latex2e/issues/71. In article mode (but not in presentation mode), also hides some potentially useful warnings such as when using $\bm{\llbracket}$, see stmaryrd in this document (not sure why).
 	\DeclareFontShape{OMX}{cmex}{bx}{n}{%
 	   <->sfixed*cmexb10%
 	   }{}

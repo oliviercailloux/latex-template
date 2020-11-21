@@ -6,14 +6,15 @@
 \NewDocumentCommand{\allF}{}{\mathscr{F}}
 \NewDocumentCommand{\allvoters}{}{\mathscr{N}}
 \NewDocumentCommand{\voters}{}{N}
-\NewDocumentCommand{\allprofs}{}{\boldsymbol{\mathcal{R}}}
-\NewDocumentCommand{\prof}{}{\boldsymbol{R}}
+\NewDocumentCommand{\prof}{}{\boldsymbol{P}}
 \NewDocumentCommand{\linors}{}{\mathscr{L}(\allalts)}
 %Thanks to https://tex.stackexchange.com/q/154549
 	%\makeatletter
 	%\def\@myRgood@#1#2{\mathrel{R^X_{#2}}}
 	%\def\myRgood{\@ifnextchar_{\@myRgood@}{\mathrel{R^X}}}
 	%\makeatother
+\NewDocumentCommand{\pref}{}{\succ}
+\NewDocumentCommand{\prefi}{O{i}}{\succ_{#1}}
 
 %Deliberated Judgment
 \NewDocumentCommand{\allargs}{}{S^*}
