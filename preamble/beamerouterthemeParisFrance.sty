@@ -26,6 +26,8 @@
 	\end{beamercolorbox}%
 }
 
+\NewDocumentCommand{\mytotalframenumber}{}{\inserttotalframenumber}
+
 % bug corrected, https://bitbucket.org/rivanvx/beamer/issue/195/incorrect-handling-of-empty-shortinstitute
 \defbeamertemplate*{footline}{authortitle}{%
 	\leavevmode%
@@ -40,7 +42,7 @@
 			\usebeamerfont{title in head/foot}\insertshorttitle%
 		\end{beamercolorbox}%
 		\begin{beamercolorbox}[wd=.09\paperwidth,ht=2.25ex,dp=1ex,right]{page number in head/foot}%
-			\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}%
+			\insertframenumber{} / \mytotalframenumber\hspace*{2ex}%
 		\end{beamercolorbox}%
 	}
 }
@@ -49,7 +51,7 @@
 	\leavevmode%
 	\hfill%
 	\usebeamercolor{page number in head/foot}%
-	\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}%
+	\insertframenumber{} / \mytotalframenumber\hspace*{2ex}%
 }
 
 \defbeamertemplate{footline}{title}{%
@@ -60,7 +62,7 @@
 			\insertshorttitle%
 		\end{beamercolorbox}%
 		\begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{page number in head/foot}%
-			\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}%
+			\insertframenumber{} / \mytotalframenumber\hspace*{2ex}%
 		\end{beamercolorbox}%
 	}
 }
@@ -76,12 +78,19 @@
 			\insertshortsubtitle
 		\end{beamercolorbox}%
 		\begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{page number in head/foot}%
-			\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}%
+			\insertframenumber{} / \mytotalframenumber\hspace*{2ex}%
 		\end{beamercolorbox}%
 	}
 }
 
 \setbeamertemplate{frametitle continuation}[from second]
+
+\makeatletter
+	\appto\appendix{%
+		\RenewDocumentCommand{\mytotalframenumber}{}{\romannumeral \inserttotalframenumber}%
+		\def\insertframenumber{\@roman\c@framenumber}%
+	}
+\makeatother
 
 \mode<all>
 
