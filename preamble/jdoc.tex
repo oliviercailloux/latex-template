@@ -47,7 +47,8 @@
 %Thx https://tex.stackexchange.com/a/34318.
 %Approach: define the following jdocRef macros. AtSign (starts with at); Module (before unique / or empty); Method (after unique # if has ( or empty); Field (after unique # if no ( or empty if no #); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
 %The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. The default appearance can be changed with keys.
-%Notation: I considered using double colon to separate class from method (https://stackoverflow.com/a/59418704), and writing parameters as, for example, Random::doubles(origin: double, bound: double), following UML notation. But to be coherent, must then use the double colon to separate package elements and class from inner classes, for example, java::util::Random and HTML::Attribute::HEIGHT, which is not readable. Seems more reasonable to follow closely the Javadoc notation (after all, it’s Java classes that we refer to, not language-neutral classes). The only addition being when I need the parameter names, which I write as Random#doubles(double origin, double bound).
+%Notation: I considered using double colon to separate class from method (https://stackoverflow.com/a/59418704), and writing parameters as, for example, Random::doubles(origin: double, bound: double), following UML notation. But to be coherent, must then use the double colon to separate package elements and class from inner classes, for example, java::util::Random and HTML::Attribute::HEIGHT, which is not readable. Seems more reasonable to follow closely the Javadoc notation (after all, we refer to Java classes, not language-neutral classes). The only addition being when I need the parameter names, which I write as Random#doubles(double origin, double bound). Note that it is necessary to distinguish static method calls: Math.sqrt(16) and object methods: String#toUpperCase(). Using a dot in the latter case is unsatisfactory, as it lets the reader wonder whether this is a static method that is called. Using a dash in the first case is unsatisfactory, as, when the parameter is bound, we want to illustrate a specific call, not refer to a method in general.
+%TODO permit to show a dot or a dash (default to dash). Permit to omit entirely the parenthesis, to allow for displaying Math.sqrt(16) or Math.sqrt(Math.PI). Or better, allow to specify the content (but this may be a jdocref again).
 \newcommand{\jdocRef}[2][]{%
 	\pgfkeys{/jdocRef/.cd, default, #1}%
 	\edef\jdocRefFull{#2}%
@@ -192,7 +193,7 @@
 \DeclareExpandableDocumentCommand{\jdocRefEESevenBaseUrl}{}{https\string://docs.oracle.com/javaee/7/api/}
 \DeclareExpandableDocumentCommand{\jdocRefEEEightBaseUrl}{}{https\string://javaee.github.io/javaee-spec/javadocs/}
 
-\DeclareExpandableDocumentCommand{\jdocRefBaseUrl}{}{\jdocRefTwelveBaseUrl}
+\DeclareExpandableDocumentCommand{\jdocRefBaseUrl}{}{\jdocRefElevenBaseUrl}
 \DeclareExpandableDocumentCommand{\jdocRefParametersStyle}{}{parenthesis}
 
 %TODO Let travis compile LaTeX. Make sure it fails iff compilation fails. Take https://tex.stackexchange.com/a/48613 (perhaps consider https://tex.stackexchange.com/questions/12067/whats-the-folk-lore-on-automatic-testing-of-tex-programming) for writing integration tests. In a test folder, define a test .tex file. Read https://tex.stackexchange.com/a/161982 and improve code.
