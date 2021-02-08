@@ -1,4 +1,5 @@
 %Requires package xcolor.
+%\definecolor{ao(english)}{rgb}{0.0, 0.5, 0.0}
 \NewDocumentCommand{\commentOC}{m}{\textcolor{blue}{\small$\big[$OC: #1$\big]$}}
 %Requires package babel and option [french]. According to babel doc, need two braces around \selectlanguage to make the changes really local.
 \NewDocumentCommand{\commentOCf}{m}{\textcolor{blue}{{\small\selectlanguage{french}$\big[$OC : #1$\big]$}}}
@@ -121,6 +122,8 @@
 \newunicodechar{⊀}{\nprec}
 %2281 Does Not Succeed
 \newunicodechar{⊁}{\nsucc}
+%2286
+\newunicodechar{⊆}{\subseteq}
 %22B2 Normal Subgroup Of – using \vartriangleleft from amsfonts, which goes well with \trianglelefteq, \ntriangleright, and so on, also from amsfonts; another possibility is \lhd from latexsym, which seems visually equivalent to \vartriangleleft from amsfonts; latexsym also has ⊴=\unlhd, but doesn’t have a symbol for ⊴. Other related symbols: \triangleleft from latesym package is too small; fdsymbol provides \triangleleft=\medtriangleleft and \vartriangleleft=\smalltriangleleft; MnSymbol provides \medtriangleleft and \vartriangleleft=\lessclosed=\lhd which are smaller than \vartriangleleft from amsfont; \vartriangleleft from mathabx (p. 67), looks different (wider); also \vartriangleleft from boisik (p. 69) looks still different; \vartriangleleft=\lhd from stix are smaller. Oddly enough, \triangleright appears as the LMMathItalic12-Regular font whereas \rhd appears as LASY10 and \vartriangleright appears as MSAM10.
 \newunicodechar{⊲}{\vartriangleleft}
 %22B3 Contains as Normal Subgroup (also: 25B7 White right-pointing triangle or 25B9 White right-pointing small triangle)
@@ -154,6 +157,8 @@
 %301B Right White Square Bracket
 \newunicodechar{〛}{\textrbrackdbl}
 %→ is defined by default as \textrightarrow, which is invalid in math mode. Same thing for the three other commands. Using \DeclareUnicodeCharacter instead of \newunicodechar because the latter warns about the previous definition.
+%← Leftwards Arrow
+\DeclareUnicodeCharacter{2190}{\ifmmode\leftarrow\else\textleftarrow\fi}
 %→ Rightwards Arrow
 \DeclareUnicodeCharacter{2192}{\ifmmode\rightarrow\else\textrightarrow\fi}
 %¬ Not Sign
