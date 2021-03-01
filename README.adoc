@@ -1,2 +1,17 @@
-= LaTeX coherent template: formart
+= LaTeX coherent template: bigg
+
+== “Coherent” templates
+Lots of packages exist in LaTeX to make life simpler. Unfortunately, many are outdated, and one still easily finds on the internet bad advices recommending to use some outdated packages. Such packages sometimes seem handy to solve a specific problem, but create problems on the longer term, or introduce lower-quality typesetting.
+Furthermore, some packages are incompatible, or using them together require to load them in a specific order (or strange errors result, which can be hard to debug).
+
+Hence the concept of a “coherent” template: a sort of LaTeX template that focuses on proposing a set of packages (with configuration instructions, when required) that go together well.
+
+== This template
+This template features lots of packages that I have gathered over time and find useful, that (hopefully) form a coherent set and implement best practices in LaTeX for modern and easier typesetting, and that I have taken care to put in a recommended order (as instructed in their respective manuals). 
+(You will understand why I named it “bigg” by looking at https://github.com/oliviercailloux/latex-template/blob/master/preamble/packages.tex[packages.tex].)
+Feel free to adapt it to your needs.
+
+It features an article template, a beamer presentation one, and a poster template. All use the same packages.tex (and other) support files, with conditionals to disable some packages that are useful only for some of those cases. (This permits to ease maintenance by reducing duplication.)
+
+Please report an issue if something fails because of these packages or their configuration as featured in this template.
 
