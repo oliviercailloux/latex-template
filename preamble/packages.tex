@@ -48,7 +48,7 @@
 	%\newcolumntype{L}{>{$}l<{$}}
 %Provides \xpretocmd and loads etoolbox which provides \apptocmd, \patchcmd, \newtoggle… Also loads xparse, which provides \NewDocumentCommand and similar commands intended as replacement of \newcommand in LaTeX3 for defining commands (see https://tex.stackexchange.com/q/98152 and https://github.com/latex3/latex2e/issues/89).
 	\usepackage{xpatch}
-%ntheorem doc says: “empheq provides an enhanced vertical placement of the endmarks”; must be loaded before ntheorem. Loads the mathtools package, which loads and fixes some bugs in amsmath and provides \DeclarePairedDelimiter. amsmath is considered a basic, mandatory package nowadays (Grätzer, More Math Into LaTeX).
+%ntheorem doc says: “empheq provides an enhanced vertical placement of the endmarks”; must be loaded before ntheorem. Loads the mathtools package, which loads and fixes some bugs in amsmath and provides \DeclarePairedDelimiter. amsmath is considered a basic, mandatory package nowadays (Grätzer, More Math Into LaTeX). I recommend \begin{equation}, which allows numbering, rather than \[ (and $$ should be avoided), see https://tex.stackexchange.com/questions/503.
 	\usepackage[ntheorem]{empheq}
 %Package frenchb asks to load natbib before babel-french. Package hyperref asks to load natbib before hyperref.
 	\usepackage{natbib}
