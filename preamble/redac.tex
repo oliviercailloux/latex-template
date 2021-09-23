@@ -8,6 +8,9 @@
 
 \bibliographystyle{abbrvnat}
 \NewDocumentCommand{\possessivecite}{mO{}}{\citeauthor{#1}’s \citeyearpar[#2]{#1}}
+\NewDocumentCommand{\Possessivecite}{mO{}}{\Citeauthor{#1}’s \citeyearpar[#2]{#1}}%TODO test
+
+\newtheorem{conjecture}{Conjecture}
 
 %https://tex.stackexchange.com/a/467188, https://tex.stackexchange.com/a/36088 - uncomment if one of those symbols is used.
 %\DeclareFontFamily{U} {MnSymbolD}{}
@@ -58,16 +61,32 @@
 %%Rightwards wave arrow: ↝. Alternative: \rightsquigarrow from amssymb, but it’s uglier
 %\DeclareMathSymbol{\rightlsquigarrow}{\mathrel}{MnSyA}{160}
 
+%03B1 Greek Small Letter Alpha
+\newunicodechar{α}{\alpha}
 %03B3 Greek Small Letter Gamma
 \newunicodechar{γ}{\gamma}
 %03B4 Greek Small Letter Delta
 \newunicodechar{δ}{\delta}
+%03C6 Greek Small Letter Phi (“the ordinary Greek letter, showing considerable glyph variation; in mathematical contexts, the loopy glyph is preferred, to contrast with 03D5 φ” – The Unicode Standard 13.0, https://www.unicode.org/charts/PDF/U0370.pdf)
+\newunicodechar{φ}{\phi}
+%03D5 Greek Phi symbol (“used as a technical symbol, with a stroked glyph” – The Unicode Standard 13.0, https://www.unicode.org/charts/PDF/U0370.pdf)
+\newunicodechar{ϕ}{\varphi}
+%03A6 Φ Greek Capital Letter Phi
+\newunicodechar{Φ}{\Phi}
+%03A8 Φ Greek Capital Letter Psi
+\newunicodechar{Ψ}{\Psi}
 %2115 Double-Struck Capital N
 \newunicodechar{ℕ}{\mathbb{N}}
+%211A Double-Struck Capital Q
+\newunicodechar{ℚ}{\mathbb{Q}}
 %211D Double-Struck Capital R
 \newunicodechar{ℝ}{\mathbb{R}}
+%2194 
+\newunicodechar{↔}{\leftrightarrow}
 %21CF Rightwards Double Arrow with Stroke
 \newunicodechar{⇏}{\nRightarrow}
+%21D0 Leftwards Double Arrow
+\newunicodechar{⇐}{\ensuremath{\Leftarrow}}
 %21D2 Rightwards Double Arrow
 \newunicodechar{⇒}{\ensuremath{\Rightarrow}}
 %21D4 Left Right Double Arrow
@@ -78,6 +97,8 @@
 \newunicodechar{∅}{\emptyset}
 %2212 Minus Sign
 \newunicodechar{−}{\ifmmode{-}\else\textminus\fi}
+%221E Infinity
+\newunicodechar{∞}{\infty}
 %2227 Logical And
 \newunicodechar{∧}{\land}
 %2228 Logical Or
@@ -124,6 +145,12 @@
 \newunicodechar{⊁}{\nsucc}
 %2286
 \newunicodechar{⊆}{\subseteq}
+%22A2
+\newunicodechar{⊢}{\vdash}
+%22A5 Up Tack
+\newunicodechar{⊥}{\bot}
+%22AC
+\newunicodechar{⊬}{\nvdash}
 %22B2 Normal Subgroup Of – using \vartriangleleft from amsfonts, which goes well with \trianglelefteq, \ntriangleright, and so on, also from amsfonts; another possibility is \lhd from latexsym, which seems visually equivalent to \vartriangleleft from amsfonts; latexsym also has ⊴=\unlhd, but doesn’t have a symbol for ⊴. Other related symbols: \triangleleft from latesym package is too small; fdsymbol provides \triangleleft=\medtriangleleft and \vartriangleleft=\smalltriangleleft; MnSymbol provides \medtriangleleft and \vartriangleleft=\lessclosed=\lhd which are smaller than \vartriangleleft from amsfont; \vartriangleleft from mathabx (p. 67), looks different (wider); also \vartriangleleft from boisik (p. 69) looks still different; \vartriangleleft=\lhd from stix are smaller. Oddly enough, \triangleright appears as the LMMathItalic12-Regular font whereas \rhd appears as LASY10 and \vartriangleright appears as MSAM10.
 \newunicodechar{⊲}{\vartriangleleft}
 %22B3 Contains as Normal Subgroup (also: 25B7 White right-pointing triangle or 25B9 White right-pointing small triangle)
@@ -156,9 +183,11 @@
 \newunicodechar{〚}{\textlbrackdbl}
 %301B Right White Square Bracket
 \newunicodechar{〛}{\textrbrackdbl}
-%→ is defined by default as \textrightarrow, which is invalid in math mode. Same thing for the three other commands. Using \DeclareUnicodeCharacter instead of \newunicodechar because the latter warns about the previous definition.
+%00B1 Plus-Minus Sign ±
+\DeclareUnicodeCharacter{00B1}{\pm}
 %← Leftwards Arrow
 \DeclareUnicodeCharacter{2190}{\ifmmode\leftarrow\else\textleftarrow\fi}
+%→ is defined by default as \textrightarrow, which is invalid in math mode. Same thing for the three other commands. Using \DeclareUnicodeCharacter instead of \newunicodechar because the latter warns about the previous definition.
 %→ Rightwards Arrow
 \DeclareUnicodeCharacter{2192}{\ifmmode\rightarrow\else\textrightarrow\fi}
 %¬ Not Sign
