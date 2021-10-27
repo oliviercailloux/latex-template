@@ -21,34 +21,101 @@
 \newbool{jdocRefShowField}
 \newbool{jdocRefShowMethod}
 \newbool{jdocRefShowParameters}
+\newbool{jdocRefShowParenthesis}
 \pgfkeys{
 	/jdocRef/.is family,
 	/jdocRef/.cd,
 	full text/.estore in = \jdocRefFullText,
 	parameters text/.estore in = \jdocRefParametersText,
 	base url/.estore in = \jdocRefBaseUrl,
-	parameters style/.estore in = \jdocRefParametersStyle,
+	url parameters style/.estore in = \jdocRefParametersStyle,
 	typewriter/.is if = jdocRefTypewriter,
 	show package/.is if = jdocRefShowPackage,
 	show field/.is if = jdocRefShowField,
 	show method/.is if = jdocRefShowMethod,
 	show parameters/.is if = jdocRefShowParameters,
+	show parenthesis/.is if = jdocRefShowParenthesis,
 	default/.style = {
 		full text =,
 		parameters text=,
+		base url = \jdocRefDefaultBaseUrl,
+		url parameters style = \jdocRefDefaultParametersStyle,
 		typewriter = true,
 		show package = false,
 		show field = true,
 		show method = true,
 		show parameters = false,
+		show parenthesis = true,
 	},
 }
 
 %Thx https://tex.stackexchange.com/a/34318.
-%Approach: define the following jdocRef macros. AtSign (starts with at); Module (before unique / or empty); Method (after unique # if has ( or empty); Field (after unique # if no ( or empty if no #); FQName (between / and # or after / or before # or everything); FQNameSlashes (FQName with slashes instead of dots); Class (between last dot and #).
-%The main argument specifies everything needed to build the URL and the default appearance (@ or no @…), except possibly for default global variables such as base url. The default appearance can be changed with keys.
-%Notation: I considered using double colon to separate class from method (https://stackoverflow.com/a/59418704), and writing parameters as, for example, Random::doubles(origin: double, bound: double), following UML notation. But to be coherent, must then use the double colon to separate package elements and class from inner classes, for example, java::util::Random and HTML::Attribute::HEIGHT, which is not readable. Seems more reasonable to follow closely the Javadoc notation (after all, we refer to Java classes, not language-neutral classes). The only addition being when I need the parameter names, which I write as Random#doubles(double origin, double bound). Note that it is necessary to distinguish static method calls: Math.sqrt(16) and object methods: String#toUpperCase(). Using a dot in the latter case is unsatisfactory, as it lets the reader wonder whether this is a static method that is called. Using a dash in the first case is unsatisfactory, as, when the parameter is bound, we want to illustrate a specific call, not refer to a method in general.
-%TODO permit to show a dot or a dash (default to dash). Permit to omit entirely the parenthesis, to allow for displaying Math.sqrt(16) or Math.sqrt(Math.PI). Or better, allow to specify the content (but this may be a jdocref again).
+%Approach: define the following jdocRef macros. 
+%	AtSign (starts with at); 
+%	Module (before unique / or empty); 
+%	Method (after unique # if has ( or empty); 
+%	Field (after unique # if no ( or empty if no #); 
+%	FQName (between / and # or after / or before # or everything); 
+%	FQNameSlashes (FQName with slashes instead of dots); 
+%	Class (between last dot and #).
+%Usage:
+%	The main argument specifies the thing that is referenced (including whether it is an annotation, using @). The default appearance, the url… can be changed with keys.
+%	The show parameters option is used only if parameters text is not set.
+%Examples:
+%	\jdocRefJavaVersion{8}
+%	\jdocRef{java.util/Random}
+%	\jdocRef{java.util/Random\#ints()} 
+%	\jdocRef{java.util/Random\#doubles(double, double)} 
+%	\jdocRef[show parameters]{java.util/Random\#doubles(double, double)} 
+%	\jdocRef[parameters text={double origin, double bound}]{java.util/Random\#doubles(double, double)} 
+%	\jdocRef{@java.lang/SuppressWarnings} 
+%	\jdocRef{@java.lang/SuppressWarnings\#value()} 
+%	\jdocRef{java.lang/Math\#PI} 
+%	\jdocRef{javax.swing.text.html/HTML.Attribute\#HEIGHT} 
+%	\jdocRef[full text=ploum]{javax.swing.text.html/HTML.Attribute\#HEIGHT} 
+%	\jdocRef[base url = \jdocRefOracleEnJava{12}, url parameters style = parenthesis]{java.base/java.util/Random}
+%	\jdocRef{javax.swing.text/DocumentFilter.FilterBypass\#insertString(int, java.lang.String, javax.swing.text.AttributeSet)}
+%	\jdocRefJavaVersion{17}
+%	\jdocRef{java.base/java.util/Random} 
+%	\jdocRef[show package]{java.base/java.util/Random\#ints()} 
+%	\jdocRef[show method = false]{java.base/java.util/Random\#doubles(double, double)} 
+%	\jdocRef{@java.base/java.lang/SuppressWarnings} 
+%	\jdocRef[typewriter = false]{@java.base/java.lang/SuppressWarnings\#value()} 
+%	\jdocRef{java.base/java.lang/Math\#PI} 
+%	\jdocRef{java.desktop/javax.swing.text.html/HTML.Attribute\#HEIGHT} 
+%	\jdocRef{java.desktop/javax.swing.text/DocumentFilter.FilterBypass\#insertString(int, java.lang.String, javax.swing.text.AttributeSet)}
+%	\jdocRef[base url = https\string://javadoc.io/static/javax.ws.rs/javax.ws.rs-api/2.1/, url parameters style = hyphen]{javax.ws.rs.core/Response.Status\#ACCEPTED}
+%Recommendations and rationale for output:
+%	I recommend to use a dot to show method calls (as opposed to method references). Note the possible ambiguity between a static parameterless method call and a parameterless method reference, if a dash is always used: Math#sqrt() VS String#toUpperCase().
+%	In case of a static method call, I recommend to link only on the method name, for coherence with instance method calls.
+%	It would also be useful to distinguish static and instance method references, but it is unclear how to do that (underlining the static ones, as in UML, conflicts with the hyperlink notation). 
+%Rationale for API: 
+%	I considered using double colon to separate class from method (https://stackoverflow.com/a/59418704), and writing parameters as, for example, Random::doubles(origin: double, bound: double), following UML notation. But to be coherent, must then use the double colon to separate package elements and class from inner classes, for example, java::util::Random and HTML::Attribute::HEIGHT, which reduces readability. Seems more reasonable to follow closely the Javadoc notation (after all, we refer to Java classes, not language-neutral classes). The only addition being when I need the parameter names. 
+%	I considered introducing an option to omit the parenthesis, to allow for displaying Math.sqrt(Math.PI) (with a jdocref on the Math.PI?). But rather simply set the text manually to “sqrt” then. The option would be useful only for static method calls, other ones would have to resort to manual text anyway. It also would complexify usage: we’d have three possible show-parameter settings.
+%	But I do not introduce option to show a dot, as it’s better to link only on the method name itself in case of a method call.
+%TODO 
+%	Let travis compile LaTeX. Make sure it fails iff compilation fails. Take https://tex.stackexchange.com/a/48613 (perhaps consider https://tex.stackexchange.com/questions/12067/whats-the-folk-lore-on-automatic-testing-of-tex-programming) for writing integration tests. In a test folder, define a test .tex file.
+%	Read https://tex.stackexchange.com/a/161982 and improve code.
+%	Permit to show a dot or a dash (default to dash). 
+%	Show ellipsis when omitting parameters from method reference.
+%	Permit to omit entirely the parenthesis,  But the link will stop before the parenthesis. Or better, allow to specify the content (but this may be a jdocref again). Perhaps as an optional argument? But anyway if the content is a jdocref, we do want the first link to stop! NB: only happens for static method calls.
+%URLs:
+%	https://docs.oracle.com/javase/7/docs/api/java/util/List.html#addAll(int,%20java.util.Collection)
+%	https://docs.oracle.com/javase/8/docs/api/java/util/List.html#addAll-int-java.util.Collection-
+%	https://docs.oracle.com/javase/9/docs/api/java/util/List.html#addAll-int-java.util.Collection-
+%	https://docs.oracle.com/javase/10/docs/api/java/util/List.html#addAll(int,java.util.Collection)
+%	https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#addAll(int,java.util.Collection)
+%	https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/util/List.html#addAll(int,java.util.Collection)
+%	https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/List.html#addAll(int,java.util.Collection)
+%	https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/List.html#addAll(int,java.util.Collection)
+%	https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/util/List.html#addAll(int,java.util.Collection)
+%	https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/List.html#addAll(int,java.util.Collection)
+%	https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html#addAll(int,java.util.Collection)
+%	https://docs.oracle.com/javaee/7/api/javax/json/JsonObject.html#getBoolean-java.lang.String-boolean-
+%	https://javaee.github.io/javaee-spec/javadocs/javax/json/JsonObject.html#getBoolean-java.lang.String-boolean-
+%	https://javadoc.io/static/javax.ws.rs/javax.ws.rs-api/2.1/javax/ws/rs/client/Invocation.html#property-java.lang.String-java.lang.Object-
+%	https://javadoc.io/static/javax.ws.rs/javax.ws.rs-api/2.1.1/javax/ws/rs/client/Invocation.html#property-java.lang.String-java.lang.Object-
+
 \newcommand{\jdocRef}[2][]{%
 	\pgfkeys{/jdocRef/.cd, default, #1}%
 	\edef\jdocRefFull{#2}%
@@ -61,7 +128,7 @@
 	}%
 	\IfSubStr{#2}{/}{%
 	}{%
-		\typeout{Missing slash!}
+		\PackageError{Missing slash!}
 	}%
 	\StrBefore{\jdocRefWithoutAt}{/}[\jdocRefBeforeFirstSlash]%
 	\StrBehind{\jdocRefWithoutAt}{/}[\jdocRefAfterFirstSlash]%
@@ -87,6 +154,8 @@
 	}%
 	\StrSubstitute{\jdocRefMethodWithParameters}{ }{}[\jdocRefMethodWithParametersWithoutSpaces]%
 	\StrBefore{\jdocRefMethodWithParameters}{(}[\jdocRefMethodWithoutParameters]%
+	\StrBehind{\jdocRefMethodWithParameters}{(}[\jdocRefParameters]%
+	\StrBefore{\jdocRefParameters}{)}[\jdocRefParameters]%
 	\IfSubStr{#2}{\#}{%
 		\StrBehind{#2}{\#}[\jdocRefAfterSharp]%
 		\IfSubStr{\jdocRefAfterSharp}{(}{%
@@ -147,21 +216,23 @@
 	}{%
 	}%
 	\ifbool{jdocRefShowMethod}{%
-		\ifbool{jdocRefShowParameters}{%
-			\IfEq{\jdocRefMethodWithParameters}{}{%
-			}{%
-				\appto\jdocRefLinkText{\#\jdocRefMethodWithoutParameters}%
-				\appto\jdocRefLinkText{(}%
-				\appto\jdocRefLinkText{\jdocRefParametersText}%
-				\appto\jdocRefLinkText{)}%
-			}%
+		\IfEq{\jdocRefMethodWithoutParameters}{}{%
 		}{%
-			\IfEq{\jdocRefMethodWithoutParameters}{}{%
+			\appto\jdocRefLinkText{\#\jdocRefMethodWithoutParameters}%
+			\appto\jdocRefLinkText{(}%
+			\IfEq{\jdocRefParametersText}{}{%
+				\IfEq{\jdocRefParameters}{}{%
+				}{%
+					\ifbool{jdocRefShowParameters}{%
+						\appto\jdocRefLinkText{\jdocRefParameters}%
+					}{%
+						\appto\jdocRefLinkText{…}%
+					}%
+				}%
 			}{%
-				\appto\jdocRefLinkText{\#\jdocRefMethodWithoutParameters}%
-				\appto\jdocRefLinkText{(}%
-				\appto\jdocRefLinkText{)}%
+				\appto\jdocRefLinkText{\jdocRefParametersText}%
 			}%
+			\appto\jdocRefLinkText{)}%
 		}%
 	}{%
 	}%
@@ -180,25 +251,25 @@
 \newcommand{\jdocRefPrintAll}{%
 	\begin{description}
 		\item[BaseUrl] \foreach \sfx in {BaseUrl}{\csname jdocRef\sfx\endcsname}
-		\foreach \sfx in {Full, AtSign, Module, MethodWithParameters, MethodWithParametersWithoutSpaces, MethodWithoutParameters, Field, Package, PackageSlashes, Class}{\item[\sfx] \csname jdocRef\sfx\endcsname}
+		\foreach \sfx in {Full, AtSign, Module, MethodWithParameters, MethodWithParametersWithoutSpaces, MethodWithoutParameters, Parameters, Field, Package, PackageSlashes, Class}{\item[\sfx] \csname jdocRef\sfx\endcsname}
 	\end{description}%
 }
 
-\DeclareExpandableDocumentCommand{\jdocRefSevenBaseUrl}{}{https\string://docs.oracle.com/javase/7/docs/api/}
-\DeclareExpandableDocumentCommand{\jdocRefEightBaseUrl}{}{https\string://docs.oracle.com/javase/8/docs/api/}
-\DeclareExpandableDocumentCommand{\jdocRefNineBaseUrl}{}{https\string://docs.oracle.com/javase/9/docs/api/}
-\DeclareExpandableDocumentCommand{\jdocRefTenBaseUrl}{}{https\string://docs.oracle.com/javase/10/docs/api/}
-\DeclareExpandableDocumentCommand{\jdocRefElevenBaseUrl}{}{https\string://docs.oracle.com/en/java/javase/11/docs/api/}
-\DeclareExpandableDocumentCommand{\jdocRefTwelveBaseUrl}{}{https\string://docs.oracle.com/en/java/javase/12/docs/api/}
-\DeclareExpandableDocumentCommand{\jdocRefEESevenBaseUrl}{}{https\string://docs.oracle.com/javaee/7/api/}
-\DeclareExpandableDocumentCommand{\jdocRefEEEightBaseUrl}{}{https\string://javaee.github.io/javaee-spec/javadocs/}
-
-\DeclareExpandableDocumentCommand{\jdocRefBaseUrl}{}{\jdocRefElevenBaseUrl}
-\DeclareExpandableDocumentCommand{\jdocRefParametersStyle}{}{parenthesis}
-
-%TODO Let travis compile LaTeX. Make sure it fails iff compilation fails. Take https://tex.stackexchange.com/a/48613 (perhaps consider https://tex.stackexchange.com/questions/12067/whats-the-folk-lore-on-automatic-testing-of-tex-programming) for writing integration tests. In a test folder, define a test .tex file. Read https://tex.stackexchange.com/a/161982 and improve code.
-
-%Standard HTML RenderKit : https://docs.oracle.com/javaee/7/javaserver-faces-2-2/renderkitdocs/HTML_BASIC/javax.faces.Inputjavax.faces.Text.html
-%\newcommand{\jsftag}[2][]{\jjdocRef{base url = https://docs.oracle.com/javaee/7/javaserver-faces-2-2/vdldocs-facelets/, full, prefix=:, #1}}
-
+\newcounter{jdocRefJavaVersionCounter}%
+\DeclareExpandableDocumentCommand{\jdocRefOracle}{m}{https\string://docs.oracle.com/javase/#1/docs/api/}
+\DeclareExpandableDocumentCommand{\jdocRefOracleEnJava}{m}{https\string://docs.oracle.com/en/java/javase/#1/docs/api/}
+\DeclareExpandableDocumentCommand{\jdocRefJavaVersion}{m}{%
+	\setcounter{jdocRefJavaVersionCounter}{#1}%
+	\ifnum\value{jdocRefJavaVersionCounter}<11%
+		\DeclareExpandableDocumentCommand{\jdocRefDefaultBaseUrl}{}{\jdocRefOracle{\thejdocRefJavaVersionCounter}}%
+	\else%
+		\DeclareExpandableDocumentCommand{\jdocRefDefaultBaseUrl}{}{\jdocRefOracleEnJava{\thejdocRefJavaVersionCounter}}%
+	\fi%
+	\ifnum\value{jdocRefJavaVersionCounter}<10%
+		\DeclareExpandableDocumentCommand{\jdocRefDefaultParametersStyle}{}{hyphen}
+	\else%
+		\DeclareExpandableDocumentCommand{\jdocRefDefaultParametersStyle}{}{parenthesis}
+	\fi%
+}
+\jdocRefJavaVersion{17}
 
