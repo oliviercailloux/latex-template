@@ -1,0 +1,32 @@
+sudo: false
+addons:
+  apt:
+    packages:
+      - latexmk
+#      - texlive-extra-utils
+#      - texlive-font-utils
+#      - texlive-fonts-extra
+#      - texlive-fonts-recommended
+      - texlive-lang-french
+#      - texlive-latex-base
+      - texlive-latex-recommended
+#required for nag.sty
+      - texlive-latex-extra
+#      - texlive-math-extra
+#      - texlive-pictures
+#      - texlive-science
+      - texlive-xetex
+script:
+#no: ubuntu precise uses latexmk 4.24-1 but V4.31 dated 30 March 2012 added -xelatex option (http://users.phys.psu.edu/~collins/software/latexmk-jcc/versions.html). Also -interaction=nonstopmode and -synctex=1 are not recognized by latexmk 4.24-1, apparently.
+#  - latexmk -xelatex -interaction=nonstopmode -synctex=1 -jobname=output
+  - latexmk -pdflatex="xelatex -interaction=nonstopmode -synctex=1 %O %S" -pdf -dvi- -ps- -jobname=output
+
+deploy:
+  provider: releases
+  api_key:
+    secure: cJV6mXM15Ywatpg7AjQp+Zpjr3u9W9i7vkKbAhXVF9P6eRw6qJmApJDZAX+4K1qay1ZoYk0hwJPcC4xVI5xoPE+5mi1lLlMvlahcPc5GEPMn86ogdMPgJqqknncWi/wGNDA8fDr9U/oPaA3gtET4YLuvK5tHSrg/a4SxcuPxCFP5mv1tA0yeElZ/j4g6jtuHWfHVo1WR3lR3piIC98UkRkgVNJ4XbouGHnVLsw18/7qJNA8fLr1BeQuQP6yv+22MuqbtoMIlyfr928CAdazM3XNnfd2kCws/hb1oYppuLsTSI4w7X9DZ+wNE2QFye3ybsDa83va9kFjHPizxLpdxbH1gu36+Laf2fX5tJRUFrwx0116pQlTaVrZVXnLJsuaCc/TKLhmMISzn0fCr3mOWtjcFD2hSRSrQSHyQ0yR7CsbWroOhCLqW3m/cP/FHmdmleyoRvL1grHmtpOb7mtglDhx6ni8wYa/f9fVYERbN07kLwkuBg1WyMyUuSJ1ACAl4Jb1hJMCsO6SmESe89MC3C8YnmDhY64ttkOAYxOVdfGqkEW+QE0Bq/63Cn1WXrlQfgGy1Z4u6wEitNhxLFiPxw752Dy66bS+o3tngygKn+Iyk9Y95cDbNwdO8Z0BY3HCdX7DU9cfVjbdKdgR2dZ7di/VdyTNuvRUs1H3aUnyiXro=
+  file: output.pdf
+  skip_cleanup: true
+  on:
+    tags: true
+
