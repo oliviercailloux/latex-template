@@ -26,8 +26,6 @@
 	   <->sfixed*cmexb10%
 	   }{}
 	\SetSymbolFont{largesymbols}{bold}{OMX}{cmex}{bx}{n}
-%https://english.stackexchange.com/questions/93008
-	\usepackage[super]{nth}
 %For small caps also in italics, see https://tex.stackexchange.com/questions/32942/italic-shape-needed-in-small-caps-fonts, https://tex.stackexchange.com/questions/284338/italic-small-caps-not-working.
 	\usepackage{slantsc}
 	\AtBeginDocument{%
@@ -92,7 +90,7 @@
 	\acsetup{single}
 	\input{preamble/acronyms}
 \iftoggle{LCpres}{
-	%I favor fmtcount over nth because it is loaded by datetime anyway; and fmtcount warns about possible conflicts when loaded after nth.
+	%I favor fmtcount over nth because it is loaded by datetime anyway; and fmtcount warns about possible conflicts when loaded after nth (“\ordinal already defined use \FCordinal instead”). See also https://english.stackexchange.com/questions/93008.
 	\usepackage{fmtcount}
 	%For nice input of date of presentation. Must be loaded after the babel package. Has possible problems with srcletter: https://golatex.de/verwendung-von-babel-und-datetime-in-scrlttr2-schlaegt-fehlt-t14779.html.
 	\usepackage[nodayofweek]{datetime}
