@@ -40,6 +40,7 @@
 
 \section{Context}
 \subsection{Focus}
+%NB in case of vertical spacing problems with equations within blocks, see https://tex.stackexchange.com/a/512867/.
 \begin{frame}
 	\frametitle{Title}
 	\begin{block}{Block}
@@ -51,7 +52,22 @@
 		\label{eq:f}
 		f(x)
 	\end{equation}
-	And a \href{http://ploum.com}{link} ? And an \url{http://url.com}?
+	And a \href{http://ploum.com}{link} ? And an \url{https://example.com}?
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Boucles}
+	\begin{block}{While}
+		\vspace{-0.85ex}
+		\begin{lstlisting}
+while (openGate) {
+	§…§
+}
+do {
+	§…§
+} while (openGate);
+		\end{lstlisting}	
+	\end{block}
 \end{frame}
 
 \begin{frame}
