@@ -10,7 +10,18 @@
 \NewDocumentCommand{\possessivecite}{mO{}}{\citeauthor{#1}’s \citeyearpar[#2]{#1}}
 \NewDocumentCommand{\Possessivecite}{mO{}}{\Citeauthor{#1}’s \citeyearpar[#2]{#1}}%TODO test
 
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{conjecture}{Conjecture}
+\newtheorem*{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+%To mark the end of an example, use: \renewcommand{\qedsymbol}{X}\qed
+\newtheorem{example}{Example}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
 
 %https://tex.stackexchange.com/a/467188, https://tex.stackexchange.com/a/36088 - uncomment if one of those symbols is used.
 %\DeclareFontFamily{U} {MnSymbolD}{}

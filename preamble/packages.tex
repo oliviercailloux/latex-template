@@ -46,8 +46,8 @@
 	%\newcolumntype{L}{>{$}l<{$}}
 %Provides \xpretocmd and loads etoolbox which provides \apptocmd, \patchcmd, \newtoggle… Also loads xparse, which provides \NewDocumentCommand and similar commands intended as replacement of \newcommand in LaTeX3 for defining commands (see https://tex.stackexchange.com/q/98152 and https://github.com/latex3/latex2e/issues/89).
 	\usepackage{xpatch}
-%ntheorem doc says: “empheq provides an enhanced vertical placement of the endmarks”; must be loaded before ntheorem. Loads the mathtools package, which loads and fixes some bugs in amsmath and provides \DeclarePairedDelimiter. amsmath is considered a basic, mandatory package nowadays (Grätzer, More Math Into LaTeX). I recommend \begin{equation}, which allows numbering, rather than \[ (and $$ should be avoided), see https://tex.stackexchange.com/questions/503.
-	\usepackage[ntheorem]{empheq}
+%loads and fixes some bugs in amsmath (a basic, mandatory package nowadays, see Grätzer, More Math Into LaTeX) and provides \DeclarePairedDelimiter. I recommend \begin{equation}, which allows numbering, rather than \[ (and $$ should be avoided), see https://tex.stackexchange.com/questions/503. Relatedly, do not use the displaymath environment: use equation. Do not use the eqnarray or eqnarray* environments: use align(*). This improves spacing. (See l2tabu or amsldoc.)
+	\usepackage{mathtools}
 %Package frenchb asks to load natbib before babel-french. Package hyperref asks to load natbib before hyperref.
 	\usepackage{natbib}
 
@@ -81,6 +81,8 @@
 	}{
 	}
 	%\frenchbsetup{AutoSpacePunctuation=false}
+%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle, but I decided to switch to amsthm because ntheorem has many problem. According to https://tex.stackexchange.com/q/535950, ntheorem “seems essentially unmaintaned and has severe problems”. Must be loaded after amsmath (from amsthm doc).
+		\usepackage{amsthm}
 %listings (1.7) does not allow multi-byte encodings. listingsutf8 works around this only for characters that can be represented in a known one-byte encoding and only for \lstinputlisting. Other workarounds: use literate mechanism; or escape to LaTeX (but breaks alignment).
 	%\usepackage{listings}
 	%\lstset{tabsize=2, basicstyle=\ttfamily, escapechar=§, literate={é}{{\'e}}1}
@@ -96,7 +98,7 @@
 	\usepackage[nodayofweek]{datetime}
 }{
 }
-%For presentations, Beamer implicitely uses the pdfusetitle option. ntheorem doc says to load hyperref “before the first use of \newtheorem”. autonum doc mandates option hypertexnames=false. I want to highlight links only if necessary for the reader to recognize it as a link, to reduce distraction. In presentations, this is already taken care of by beamer (https://tex.stackexchange.com/a/262014). If using colorlinks=true in a presentation, see https://tex.stackexchange.com/q/203056. Crashes the first compilation with tikzposter, just compile again and the problem disappears, see https://tex.stackexchange.com/q/254257.
+%For presentations, Beamer implicitely uses the pdfusetitle option. autonum doc mandates option hypertexnames=false. I want to highlight links only if necessary for the reader to recognize it as a link, to reduce distraction. In presentations, this is already taken care of by beamer (https://tex.stackexchange.com/a/262014). If using colorlinks=true in a presentation, see https://tex.stackexchange.com/q/203056. Crashes the first compilation with tikzposter, just compile again and the problem disappears, see https://tex.stackexchange.com/q/254257.
 \makeatletter
 \iftoggle{LCpres}{
 	\usepackage{hyperref}
@@ -168,10 +170,6 @@
 %“The \boldsymbol command is obtained preferably by using the bm package, which provides a newer, more powerful version than the one provided by the amsmath package. Generally speaking, it is ill-advised to apply \boldsymbol to more than one symbol at a time.” — AMS Short math guide. “If no bold font appears to be available for a particular symbol, \bm will use ‘poor man’s bold’” — bm. It is “best to load the package after any packages that define new symbol fonts” – bm. bm defines \boldsymbol as synonym to \bm. \boldmath accesses the correct font if it exists; it is used by \bm when appropriate. See https://tex.stackexchange.com/a/10643 and https://github.com/latex3/latex2e/issues/71 for some difficulties with \bm.
 	\usepackage{bm}
 	\nottoggle{LCpres}{
-	%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle. Option standard loads amssymb and latexsym. Must be loaded after amsmath (from ntheorem doc). From cleveref doc, “ntheorem is fully supported and even recommended”; says to load cleveref after ntheorem. When used with tikzposter, warns about size substitution for the lasy (latexsym) font when using \url, because ntheorem loads latexsym; relatedly (but not directly related to ntheorem), size substitution warning with the cmex font happens when loading amsmath and using \url. According to https://tex.stackexchange.com/q/535950, ntheorem “seems essentially unmaintaned and has severe problems”, but I use it anyway because it is very handy. Yields “! LaTeX Error: Something's wrong--perhaps a missing \item.” if some theorem follows thebibliography. Using the option thmmarks together with the package autonum yields “Overfull \hbox (2.61107pt too wide)”, even with an empty document.
-		\usepackage[thmmarks, amsmath, standard, hyperref]{ntheorem}
-		%empheq doc says to do this after loading ntheorem
-		\usetagform{default}
 	%Provides \cref. Unfortunately, cref fails when the language is French and referring to a label whose name contains a colon (https://tex.stackexchange.com/q/83798). Use \cref{sec\string:intro} to work around this. cleveref should go “laster” than hyperref.
 		\usepackage{cleveref}
 	}{
@@ -207,6 +205,4 @@
 	\setcounter{tocdepth}{10}
 }{
 }
-
-%Do not use the displaymath environment: use equation. Do not use the eqnarray or eqnarray* environments: use align(*). This improves spacing. (See l2tabu or amsldoc.)
 
