@@ -1,0 +1,79 @@
+= The jdoc package doc
+
+== Purpose
+This package helps typesetting references to Java constructs (classes, methods with or without parameters, …), with a link to the corresponding Javadoc.
+
+== Usage
+Use the `\jdocRefJavaVersion{n}` command to specify the JRE version you want to link to. It must be at least the version 8. Skip this if you are happy with the default, that is, the latest long-term support release, or if you do not want to reference the JRE.
+
+Then use the `\jdocRef[options]{ref}` command. Its mandatory argument, `ref`, references a Java construct. It must satisfy the following syntax.
+
+. To reference a class, use: `[module/]package/class`.
+. To reference a field, use: `[module/]package/class#field`.
+. To reference a method, use: `[module/]package/class#method(parameters)`.
+. To reference an annotation type, use: `@[module/]package/annotation-type`.
+. To reference an annotation element, use: `@[module/]package/annotation-type#element`.
+
+Brackets indicate optional parts. The non-optional parts have to be non empty, except for `parameters`. Do not forget that in LaTeX one must write `\#` (escape the dash) to obtain a dash.
+
+With no options, this will produce a link with anchor set to `[@][class][#field][#method([…])][annotation-type][#element]`, linking to the corresponding Java construct on the Oracle Javadoc website corresponding to the chosen JRE version.
+
+The options are used to tweak the appearance and target of the resulting link. The options are comma separated, using the syntax `option = value`, or, for boolean options, just `option` or `option = true` to enable it, and `option = false` to disable it. 
+
+The following options change the appearance of the link.
+
+. `full text` A text to use instead of the default one.
+. `parameters text` A text to use as parameters (that is, inside the parenthesis after the given `method`), overriding the default ellipsis and the `parameters` given in `ref`. If this option is set, the `show parameters` option is not considered.
+. `typewriter` A boolean option that specifies whether the link text is set in typewriter font (using `\texttt`). Default: `true`.
+. `show package` A boolean option that specifies whether the package must appear in the link text. Default: `false`.
+. `show field` A boolean option that specifies whether the field must appear in the link text, if given in `ref`. Default: `true`.
+. `show method` A boolean option that specifies whether the method must appear in the link text, if given in `ref`. If `false`, neither the method nor the parameters appear. Default: `true`.
+. `show parameters` A boolean option that specifies whether the parameters should be displayed as given in the `ref`. If `false`, and the parameters given in `ref` are not empty, an ellipsis (`…`) is displayed instead. Default: `false`.
+
+The following options change the target of the link.
+
+. `base url` If this is set, the link target will start with `base url/[module/]package url/` instead of targetting the Oracle Javadoc website corresponding to the chosen Java version.
+. `url parameters style` Either `hyphen` or `parenthesis`. Some javadoc websites (such as Oracle Javadoc 8) use hyphens as part of their urls, some (such as Orcle Javadoc 11) use parenthesis. This is taken care of automatically if you set your Java version with `jdocRefJavaVersion` (or are happy with the default one), but if you target another Javadoc website than Oracle’s, you may have to set this to `hyphen`. 
+
+== Examples
+After having set `\jdocRefJavaVersion{8}`, the following commands will link to Oracle’s Javadoc version 8 of the corresponding Java constructs.
+
+. `\jdocRef{java.util/Random}`
+. `\jdocRef{java.util/Random\#ints()}`
+. `\jdocRef{java.util/Random\#doubles(double, double)}` (By default, an ellipsis is displayed instead of the parameters. Note that you must stick to the exact parameters in `ref`, whose role is to designate a specific method; otherwise the link will not target the right construct.)
+. `\jdocRef[show parameters]{java.util/Random\#doubles(double, double)}`
+. `\jdocRef[parameters text = {double origin, double bound}]{java.util/Random\#doubles(double, double)}`
+. `\jdocRef{@java.lang/SuppressWarnings}`
+. `\jdocRef{@java.lang/SuppressWarnings\#value()}`
+. `\jdocRef{java.lang/Math\#PI}`
+. `\jdocRef{javax.swing.text.html/HTML.Attribute\#HEIGHT}`
+. `\jdocRef[full text = height!]{javax.swing.text.html/HTML.Attribute\#HEIGHT}`
+. `\jdocRef[base url = https://docs.oracle.com/en/java/javase/12/docs/api/, url parameters style = parenthesis]{java.base/java.util/Random}` (Do not do that, rather use `jdocRefJavaVersion{12}`.)
+. `\jdocRef{javax.swing.text/DocumentFilter.FilterBypass\#insertString(int, java.lang.String, javax.swing.text.AttributeSet)}`
+
+After having set `\jdocRefJavaVersion{17}`, the following commands will link to Oracle’s Javadoc version 17 of the corresponding Java constructs.
+
+. `\jdocRef{java.base/java.util/Random}`
+. `\jdocRef[show package]{java.base/java.util/Random\#ints()}`
+. `\jdocRef[show method = false]{java.base/java.util/Random\#doubles(double, double)}`
+. `\jdocRef{@java.base/java.lang/SuppressWarnings}`
+. `\jdocRef[typewriter = false]{@java.base/java.lang/SuppressWarnings\#value()}`
+. `\jdocRef{java.base/java.lang/Math\#PI}`
+. `\jdocRef{java.desktop/javax.swing.text.html/HTML.Attribute\#HEIGHT}`
+. `\jdocRef{java.desktop/javax.swing.text/DocumentFilter.FilterBypass\#insertString(int, java.lang.String, javax.swing.text.AttributeSet)}`
+. `\jdocRef[base url = https\string://javadoc.io/static/javax.ws.rs/javax.ws.rs-api/2.1/, url parameters style = hyphen]{javax.ws.rs.core/Response.Status\#ACCEPTED}`
+
+== Note about typesetting Java references and code
+Most of the examples above produce _references_ to Java constructs. Hence, the use of a dash. For example, `Math#random()` refers to the `random()` method from the class `Math`. An example use in context could be: “The method `Math#random()` can be used to produce a random number”. This differs from writing example code: “To produce a random number, write `Math.random()`”.
+Furthermore, when illustrating method calls with a desire to link on the related Javadoc, I recommend to link only on the method name, so the latter example could be typeset as `Math.\jdocRef[full text = random]{java.base/java.lang/Math\#random()}()`. (This permits coherence when writing example code about non static methods.)
+
+It would also be useful to distinguish static and instance method references, but it is unclear to me how to do that (underlining the static ones, as in UML, conflicts with the most common hyperlink notation). Ideas welcome.
+
+== Comments?
+Please report bugs [here]https://github.com/oliviercailloux/jdoc/issues. I will [take them seriously]https://github.com/classgraph/classgraph/blob/latest/Zero-Bugs-Commitment.md.
+
+== Licence
+Copyright (C) 2019 to 2021 by Olivier Cailloux
+
+This package may be distributed and/or modified under the conditions of the LaTeX Project Public License, either version 1.3c of this license or (at your option) any https://www.latex-project.org/lppl.txt[later version].
+
