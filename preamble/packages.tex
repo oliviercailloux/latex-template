@@ -81,8 +81,9 @@
 	}{
 	}
 	%\frenchbsetup{AutoSpacePunctuation=false}
-%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle, but I decided to switch to amsthm because ntheorem “seems essentially unmaintaned and has severe problems”, see https://tex.stackexchange.com/q/535950. Must be loaded after amsmath (from amsthm doc).
+%https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle, but I decided to switch to amsthm with thmtools (mentioned in amsthm doc) because ntheorem “seems essentially unmaintaned and has severe problems”, see https://tex.stackexchange.com/q/535950. Must be loaded after amsmath (from amsthm doc).
 		\usepackage{amsthm}
+		\usepackage{thmtools}
 %listings (1.7) does not allow multi-byte encodings. listingsutf8 works around this only for characters that can be represented in a known one-byte encoding and only for \lstinputlisting. Other workarounds: use literate mechanism; or escape to LaTeX (but breaks alignment).
 	%\usepackage{listings}
 	%\lstset{tabsize=2, basicstyle=\ttfamily, escapechar=§, literate={é}{{\'e}}1}
@@ -171,7 +172,7 @@
 	}{
 	}
 	\nottoggle{LCposter}{
-	%Equations get numbers iff they are referenced. Loading order should be “amsmath → hyperref → cleveref → autonum”, according to autonum doc. Use this in preference to the showonlyrefs option from mathtools, see https://tex.stackexchange.com/q/459918 and autonum doc. See https://tex.stackexchange.com/a/285953 for the etex line. Incompatible with my version of tikzposter (produces “! Improper \prevdepth”).
+	%Equations get numbers iff they are referenced. Loading order should be “amsmath → hyperref → cleveref → autonum”, according to autonum doc. Use this in preference to the showonlyrefs option from mathtools, see https://tex.stackexchange.com/q/459918 and autonum doc. See https://tex.stackexchange.com/a/285953 for the etex line. Incompatible with my version of tikzposter (produces “! Improper \prevdepth”). This removes the starred versions, such as equation*. Unfortunately, this prevents using \qedhere in an equation ending a proof, see https://tex.stackexchange.com/q/133358/.
 		\expandafter\def\csname ver@etex.sty\endcsname{3000/12/31}\let\globcount\newcount
 		\usepackage{autonum}
 	}{
