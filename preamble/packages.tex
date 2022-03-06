@@ -124,8 +124,7 @@
 	\NewDocumentCommand{\addhrauthor}{m}{
 		\seq_gput_right:Nn \g_oc_hrauthor_seq { #1 }
 	}
-	%Should be \NewExpandableDocumentCommand, but this is not yet provided by my version of xparse
-	\DeclareExpandableDocumentCommand{\hrauthor}{}{
+	\NewExpandableDocumentCommand{\hrauthor}{}{
 		\seq_use:Nn \g_oc_hrauthor_seq {,~}
 	}
 	\ExplSyntaxOff
