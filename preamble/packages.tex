@@ -46,7 +46,9 @@
 	%\newcolumntype{L}{>{$}l<{$}}
 %Provides \xpretocmd and loads etoolbox which provides \apptocmd, \patchcmd, \newtoggle… Also loads xparse, which provides \NewDocumentCommand and similar commands intended as replacement of \newcommand in LaTeX3 for defining commands (see https://tex.stackexchange.com/q/98152 and https://github.com/latex3/latex2e/issues/89).
 	\usepackage{xpatch}
-%loads and fixes some bugs in amsmath (a basic, mandatory package nowadays, see Grätzer, More Math Into LaTeX) and provides \DeclarePairedDelimiter. I recommend \begin{equation}, which allows numbering, rather than \[ (and $$ should be avoided), see https://tex.stackexchange.com/questions/503. Relatedly, do not use the displaymath environment: use equation. Do not use the eqnarray or eqnarray* environments: use align(*). This improves spacing. (See l2tabu or amsldoc.)
+%for \nexists and because it is a basic package nowadays, see https://tex.stackexchange.com/q/539592/.
+	\usepackage{amssymb}
+%loads and fixes some bugs in amsmath (a basic, mandatory package nowadays, see Grätzer, More Math Into LaTeX) and provides \DeclarePairedDelimiter. I recommend \begin{equation}, which allows numbering, rather than \[ (and $$ should be avoided), see https://tex.stackexchange.com/questions/503. Relatedly, do not use the displaymath environment: use equation. Do not use the eqnarray environment: use align. This improves spacing. (See l2tabu or amsldoc.)
 	\usepackage{mathtools}
 %Package frenchb asks to load natbib before babel-french. Package hyperref asks to load natbib before hyperref.
 	\usepackage{natbib}
