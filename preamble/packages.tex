@@ -154,11 +154,8 @@
 	%\usepackage{ragged2e}
 %To typeset units by closely following the “official” rules.
 	%\usepackage[strict]{siunitx}
-%Turns the doi provided by some bibliography styles into URLs. However, uses old-style dx.doi url (see 3.8 DOI system Proxy Server technical details, “Users may resolve DOI names that are structured to use the DOI system Proxy Server (https://doi.org (current, preferred) or earlier syntax http://dx.doi.org).”, https://www.doi.org/doi_handbook/3_Resolution.html). The patch solves this.
+%Turns the doi provided by some bibliography styles into URLs.
 	\usepackage{doi}
-	\makeatletter
-	\patchcmd{\@doi}{http://dx.doi.org}{https://doi.org}{}{}
-	\makeatother
 %Makes sure upper case greek letters are italic as well.
 	\usepackage{fixmath}
 %Provides \mathbb; obsoletes latexsym (see http://tug.ctan.org/macros/latex/base/latexsym.dtx). Relatedly, \usepackage{eucal} to change the mathcal font and \usepackage[mathscr]{eucal} (apparently equivalent to \usepackage[mathscr]{euscript}) to supplement \mathcal with \mathscr. This last option is not very useful as both fonts are similar, and the intent of the authors of eucal was to provide a replacement to mathcal (see doc euscript). Also provides \mathfrak for supplementary letters.
