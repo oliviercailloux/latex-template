@@ -11,15 +11,17 @@
 \NewDocumentCommand{\possessivecite}{O{}m}{\citeauthor{#2}’s \citeyearpar[#1]{#2}}
 \NewDocumentCommand{\Possessivecite}{O{}m}{\Citeauthor{#2}’s \citeyearpar[#1]{#2}}
 
-\declaretheorem{theorem}
-\declaretheorem{lemma}
-\declaretheorem{proposition}
-\declaretheorem{conjecture}
-\declaretheorem{corollary}
+\iftoggle{LCart}{
+	\declaretheorem{theorem}
+	\declaretheorem{lemma}
+	\declaretheorem{proposition}
+	\declaretheorem{conjecture}
+	\declaretheorem{corollary}
 %Possibly: qed=\scalebox{1.2}{$\hexagon$} (and \usepackage{wasysym}, after amssymb). But probably not useful as most definitions are one § only. Might also consider: circledast, circledcirc, circleddash; black triangle or black circle; diamond…
-\declaretheorem[style=definition]{definition}
-\declaretheorem[style=remark, qed=$\triangle$]{example}
-\declaretheorem[style=remark, qed=$\triangle$]{remark}
+	\declaretheorem[style=definition]{definition}
+	\declaretheorem[style=remark, qed=$\triangle$]{example}
+	\declaretheorem[style=remark, qed=$\triangle$]{remark}
+}
 
 %https://tex.stackexchange.com/a/467188, https://tex.stackexchange.com/a/36088 - uncomment if one of those symbols is used.
 %\DeclareFontFamily{U} {MnSymbolD}{}
