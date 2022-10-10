@@ -8,8 +8,8 @@
 \NewDocumentCommand{\commentYMf}{m}{\textcolor{red}{{\small\selectlanguage{french}$\big[$YM : #1$\big]$}}}
 
 \bibliographystyle{abbrvnat}
-\NewDocumentCommand{\possessivecite}{mO{}}{\citeauthor{#1}’s \citeyearpar[#2]{#1}}
-\NewDocumentCommand{\Possessivecite}{mO{}}{\Citeauthor{#1}’s \citeyearpar[#2]{#1}}
+\NewDocumentCommand{\possessivecite}{O{}m}{\citeauthor{#2}’s \citeyearpar[#1]{#2}}
+\NewDocumentCommand{\Possessivecite}{O{}m}{\Citeauthor{#2}’s \citeyearpar[#1]{#2}}
 
 \declaretheorem{theorem}
 \declaretheorem{lemma}
