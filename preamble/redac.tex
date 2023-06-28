@@ -1,11 +1,10 @@
-%Requires package xcolor.
+%Requires package xcolor and soul.
 %\definecolor{ao(english)}{rgb}{0.0, 0.5, 0.0}
 %I observed that two braces around \small are required to make it local.
-\NewDocumentCommand{\commentOC}{m}{\textcolor{blue}{{\small$\big[$OC: #1$\big]$}}}
+\NewDocumentCommand{\commentOC}{O{}m}{\ifx&#1&\else\hl{#1} \fi\textcolor{blue}{{\small$\big[$OC: #2$\big]$}}}
 %Requires package babel and option [french]. According to babel doc, need two braces around \selectlanguage to make the changes really local.
-\NewDocumentCommand{\commentOCf}{m}{\textcolor{blue}{{\small\selectlanguage{french}$\big[$OC : #1$\big]$}}}
-\NewDocumentCommand{\commentYM}{m}{\textcolor{red}{{\small$\big[$YM: #1$\big]$}}}
-\NewDocumentCommand{\commentYMf}{m}{\textcolor{red}{{\small\selectlanguage{french}$\big[$YM : #1$\big]$}}}
+\NewDocumentCommand{\commentOCf}{O{}m}{\ifx&#1&\else\hl{#1} \fi\textcolor{blue}{{\small\selectlanguage{french}$\big[$OC : #2$\big]$}}}
+\NewDocumentCommand{\commentYM}{O{}m}{\ifx&#1&\else\hl{#1} \fi\textcolor{red}{{\small$\big[$YM: #2$\big]$}}}
 
 \bibliographystyle{abbrvnat}
 \NewDocumentCommand{\possessivecite}{O{}m}{\citeauthor{#2}’s \citeyearpar[#1]{#2}}
