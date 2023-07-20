@@ -7,6 +7,7 @@
 \NewDocumentCommand{\commentYM}{O{}m}{\ifx&#1&\else\hl{#1} \fi\textcolor{red}{{\small$\big[$YM: #2$\big]$}}}
 
 \bibliographystyle{abbrvnat}
+%https://tex.stackexchange.com/questions/125690
 \NewDocumentCommand{\possessivecite}{O{}m}{\citeauthor{#2}’s \citeyearpar[#1]{#2}}
 \NewDocumentCommand{\Possessivecite}{O{}m}{\Citeauthor{#2}’s \citeyearpar[#1]{#2}}
 
