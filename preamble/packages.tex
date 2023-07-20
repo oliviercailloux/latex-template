@@ -87,9 +87,12 @@
 %Language options ([french, english]) should be on the document level (last is main); except with tikzposter: put [french, english] options next to \usepackage{babel} to avoid warning. beamer uses the \translate command for the appendix: omitting babel results in a warning, see https://github.com/josephwright/beamer/issues/449. Babel also seems required for \refname.
 	\iftoggle{LCpres}{
 		\usepackage{babel}
+		\frenchbsetup{AutoSpacePunctuation=false}
+%https://tex.stackexchange.com/questions/162137/loading-microtype-before-or-after-the-font
+		\usepackage[babel]{microtype}
 	}{
+		\usepackage{microtype}
 	}
-	%\frenchbsetup{AutoSpacePunctuation=false}
 %https://ctan.org/pkg/amsmath recommends ntheorem, which supersedes amsthm, which corrects the spacing of proclamations and allows for theoremstyle, but I decided to switch to amsthm with thmtools (mentioned in amsthm doc) because ntheorem “seems essentially unmaintaned and has severe problems”, see https://tex.stackexchange.com/q/535950. Must be loaded after amsmath (from amsthm doc).
 		\usepackage{amsthm}
 		\usepackage{thmtools}
