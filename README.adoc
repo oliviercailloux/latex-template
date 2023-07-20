@@ -8,7 +8,7 @@ Hence the concept of a “coherent” template: a sort of LaTeX template that fo
 
 == This template
 This template features lots of packages that I have gathered over time and find useful, that (hopefully) form a coherent set and implement best practices in LaTeX for modern and easier typesetting, and that I have taken care to put in a recommended order (as instructed in their respective manuals). 
-(You will understand why I named it “bigg” by looking at https://github.com/oliviercailloux/latex-template/blob/master/preamble/packages.tex[packages.tex].)
+(You will understand why I named it “bigg” by looking at https://github.com/oliviercailloux/latex-template/blob/main/preamble/packages.tex[packages.tex].)
 Feel free to adapt it to your needs.
 
 It features an article template, a beamer presentation one, and a poster template. All use the same packages.tex (and other) support files, with conditionals to disable some packages that are useful only for some of those cases. (This permits to ease maintenance by reducing duplication.)
