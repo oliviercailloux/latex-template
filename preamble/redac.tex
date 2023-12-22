@@ -228,3 +228,13 @@
 %Permits to really obtain a straight quote when typing a straight quote; potentially dangerous, see https://tex.stackexchange.com/a/521999, and prevents using double primes (x''). Better then use U+2032 for prime [as recommended in Unicode ® Technical Report #25 UNICODE SUPPORT FOR MATHEMATICS], U+2033 for double prime, U+2034 for triple prime and define the appropriate commands. But arguably that’s for purists.
 %\catcode`\'=\active
 %\DeclareUnicodeCharacter{0027}{\ifmmode^\prime\else\textquotesingle\fi}
+
+%I find these settings useful in draft mode. Should be removed for final versions.
+	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
+	\tolerance=2000
+	%Accept overfull hbox up to...
+		\hfuzz=2cm
+	%Reduces verbosity about the bad line breaks.
+		\hbadness 5000
+	%Reduces verbosity about the underful vboxes.
+		\vbadness=1300
