@@ -1,11 +1,17 @@
-%Reading the answers to https://math.stackexchange.com/questions/1220760/what-is-the-difference-between-natural-numbers-and-positive-integers/, I get that it seems (more or less) consensual that Z^+ = 1, … designates the “positive integers”, also known as the “counting numbers”; and that Z designates the “integers”, also known as the “whole numbers”. The notation ℕ designates the “natural numbers”, and it is ambiguous whether it includes zero.
+%The “natural numbers”, ambiguous whether it includes zero; to be used only for “\in \N” to mean that a set is finite.
 \NewDocumentCommand{\N}{}{ℕ}
+%The “non-negative integers”, thus including zero.
+\NewDocumentCommand{\Nz}{}{ℕ_0}
+%Consensually, the “integers”, also known as the “whole numbers”.
+\NewDocumentCommand{\Z}{}{ℤ}
+%Reading the answers to https://math.stackexchange.com/questions/1220760/what-is-the-difference-between-natural-numbers-and-positive-integers/, I get that it seems (more or less) consensual that Z^+ = 1, … designates the “positive integers” (implying, strictly), also known as the “counting numbers”. 
+\NewDocumentCommand{\Zp}{}{ℤ^+}
 \NewDocumentCommand{\Q}{}{ℚ}
 \NewDocumentCommand{\R}{}{ℝ}
 %\mathscr is rounder than \mathcal.
 \NewDocumentCommand{\powerset}{m}{\mathscr{P}(#1)}
-%Powerset without zero.
-\NewDocumentCommand{\powersetz}{m}{\mathscr{P}^*(#1)}
+%Powerset without zero (with p for “positive”).
+\NewDocumentCommand{\powersetp}{m}{\mathscr{P}(#1) \setminus \set{\emptyset}}
 %https://tex.stackexchange.com/a/45732, works within both \set and \set*, same spacing than \mid (https://tex.stackexchange.com/a/52905).
 \NewDocumentCommand{\suchthat}{}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
 \NewDocumentCommand{\st}{}{\text{ s.\ t.\ }}
