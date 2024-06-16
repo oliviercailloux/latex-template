@@ -24,6 +24,11 @@
 \DeclarePairedDelimiter\set{\{}{\}}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
+% Semantic relations: strict subset (included in and not equal) and weak subset (included in and possibly equal)
+\NewDocumentCommand{\ssub}{}{\subsetneq}
+\NewDocumentCommand{\wsub}{}{\subseteq}
+% Thanks to https://math.stackexchange.com/questions/1121553/is-there-a-notation-for-being-a-finite-subset-of, only suitable when the right hand side is infinite (otherwise, need to specify whether the subsetting is strict).
+\NewDocumentCommand{\fsub}{}{\subset_\text{fin}}
 
 %UTR #25: Unicode support for mathematics recommend to use the straight form of phi (by default, given by \phi) rather than the curly one (by default, given by \varphi), and thus use \phi for the mathematical symbol and not \varphi. I however prefer the curly form because the straight form is too easy to mix up with the symbol for empty set.
 \let\phi\varphi
