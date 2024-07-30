@@ -10,6 +10,7 @@
 %https://tex.stackexchange.com/questions/125690
 \NewDocumentCommand{\possessivecite}{O{}m}{\citeauthor{#2}’s \citeyearpar[#1]{#2}}
 \NewDocumentCommand{\Possessivecite}{O{}m}{\Citeauthor{#2}’s \citeyearpar[#1]{#2}}
+\NewDocumentCommand{\email}{m}{\href{mailto:#1}{\nolinkurl{#1}}}
 
 \iftoggle{LCart}{
 	\declaretheorem{theorem}
