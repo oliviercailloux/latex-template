@@ -28,11 +28,6 @@
 		\path (current page.south) ++ (0, 4em) node[anchor=south, inner sep=0] {
 			\scriptsize\textcolor{blue}{\url{https://github.com/oliviercailloux/REPO}}
 		};
-%thanks to https://stackoverflow.com/questions/2423777/is-it-possible-to-create-a-remote-repo-on-github-from-the-cli-without-opening-br/13366414#13366414
-%REPO=…
-%curl -u 'oliviercailloux' https://api.github.com/user/repos -d "{\"name\":\"${REPO}\"}"
-%git remote add origin git@github.com:oliviercailloux/${REPO}.git
-%git push --set-upstream origin master
 	}
 	\titlepage
 \end{frame}
@@ -71,13 +66,13 @@ do {
 \end{frame}
 
 \begin{frame}
-	\frametitle{Outline}
+	\frametitle{\translate{Outline}}
 	\tableofcontents[hideallsubsections, sectionstyle=shaded/show]
 \end{frame}
 
 \AtBeginSection{
 	\begin{frame}
-		\frametitle{Outline}
+		\frametitle{\translate{Outline}}
 		\tableofcontents[currentsection, hideallsubsections]
 	\end{frame}
 }
@@ -112,6 +107,13 @@ do {
 \end{frame}
 \addtocounter{framenumber}{-1}
 \end{document}
+
+\begin{frame}
+	\frametitle{Title}
+	\begin{itemize}
+		\item Item
+	\end{itemize}
+\end{frame}
 
 \begin{frame}
 	\frametitle{Title}
