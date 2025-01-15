@@ -93,6 +93,8 @@
 		\usepackage{babel}
 %https://tex.stackexchange.com/questions/162137/loading-microtype-before-or-after-the-font
 		\usepackage[babel]{microtype}
+    % To avoid warning with Overleaf or PLM (https://tex.stackexchange.com/questions/711943/how-to-properly-apply-microtype-footnote-patch-in-an-overleaf-compiled-document)
+		% \usepackage[babel, nopatch=footnote]{microtype}
 	}{
 		\usepackage{microtype}
 	}
@@ -189,7 +191,7 @@
 	\usepackage{bm}
 	\nottoggle{LCpres}{
 	%Provides \cref. Unfortunately, cref fails when the language is French and referring to a label whose name contains a colon (https://tex.stackexchange.com/q/83798). Use \cref{sec\string:intro} to work around this. cleveref should go “laster” than hyperref.  Cleveref gets disabled in presentation mode as it do not seem to go well with Beamer, see https://github.com/josephwright/beamer/issues/750.
-		\usepackage[capitalise]{cleveref}
+		\usepackage[capitalise, nameinlink]{cleveref}
 	}{
 	}
 	\nottoggle{LCposter}{
