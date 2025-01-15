@@ -6,6 +6,7 @@
 *.fls
 *.log
 *.synctex.gz
+*.synctex.gz(busy)
 *.thm
 #Pres
 *.nav
@@ -15,4 +16,5 @@
 *.vrb
 
 *.pdf
-
+latexmkrc
+Local notes.adoc
