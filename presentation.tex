@@ -18,18 +18,18 @@
 
 \begin{document}
 \begin{frame}[plain]
-	\tikz[remember picture,overlay]{
-		\path (current page.south west) node[anchor=south west, inner sep=0] {
-			\includegraphics[height=8mm]{Dauphine-Noir.png}
-		};
-		\path (current page.south east) node[anchor=south east, inner sep=0] {
-			\includegraphics[height=1cm]{LAMSADE95.jpg}
-		};
-		\path (current page.south) ++ (0, 4em) node[anchor=south, inner sep=0] {
-			\scriptsize\textcolor{blue}{\url{https://github.com/oliviercailloux/REPO}}
-		};
-	}
-	\titlepage
+  \tikz[remember picture,overlay]{
+    \path (current page.south west) node[anchor=south west, inner sep=0] {
+      \includegraphics[height=8mm]{Dauphine-Noir.png}
+    };
+    \path (current page.south east) node[anchor=south east, inner sep=0] {
+      \includegraphics[height=1cm]{LAMSADE95.jpg}
+    };
+    \path (current page.south) ++ (0, 4em) node[anchor=south, inner sep=0] {
+      \scriptsize\textcolor{blue}{\url{https://github.com/oliviercailloux/REPO}}
+    };
+  }
+  \titlepage
 \end{frame}
 \addtocounter{framenumber}{-1}
 
@@ -37,54 +37,54 @@
 \subsection{Focus}
 %NB in case of vertical spacing problems with equations within blocks, see https://tex.stackexchange.com/a/512867/.
 \begin{frame}
-	\frametitle{Title}
-	\begin{block}{Block}
-		\begin{itemize}
-			\item Item
-		\end{itemize}
-	\end{block}
-	\begin{equation}
-		\label{eq:f}
-		f(x)
-	\end{equation}
-	And a \href{http://ploum.com}{link} ? And an \url{https://example.com}?
+  \frametitle{Title}
+  \begin{block}{Block}
+    \begin{itemize}
+      \item Item
+    \end{itemize}
+  \end{block}
+  \begin{equation}
+    \label{eq:f}
+    f(x)
+  \end{equation}
+  And a \href{http://ploum.com}{link} ? And an \url{https://example.com}?
 \end{frame}
 
 \begin{frame}[fragile]
-	\frametitle{Boucles}
-	\begin{block}{While}
-		\vspace{-0.85ex}
-		\begin{lstlisting}
+  \frametitle{Boucles}
+  \begin{block}{While}
+    \vspace{-0.85ex}
+    \begin{lstlisting}
 while (openGate) {
-	§…§
+  §…§
 }
 do {
-	§…§
+  §…§
 } while (openGate);
-		\end{lstlisting}	
-	\end{block}
+    \end{lstlisting}	
+  \end{block}
 \end{frame}
 
 \begin{frame}
-	\frametitle{\translate{Outline}}
-	\tableofcontents[hideallsubsections, sectionstyle=shaded/show]
+  \frametitle{\translate{Outline}}
+  \tableofcontents[hideallsubsections, sectionstyle=shaded/show]
 \end{frame}
 
 \AtBeginSection{
-	\begin{frame}
-		\frametitle{\translate{Outline}}
-		\tableofcontents[currentsection, hideallsubsections]
-	\end{frame}
+  \begin{frame}
+    \frametitle{\translate{Outline}}
+    \tableofcontents[currentsection, hideallsubsections]
+  \end{frame}
 }
 
 \section{Second}
 
 \begin{frame}[plain]
-	\addtocounter{framenumber}{-1}
-	\begin{center}
-		\huge
-		\textit{Thank you for your attention!}
-	\end{center}
+  \addtocounter{framenumber}{-1}
+  \begin{center}
+    \huge
+    \textit{Thank you for your attention!}
+  \end{center}
 \end{frame}
 
 \end{document}
@@ -94,37 +94,37 @@ do {
 }
 
 \begin{frame}[allowframebreaks]
-	\frametitle{\refname}
- 	\bibliography{zotero}
+  \frametitle{\refname}
+   \bibliography{zotero}
 \end{frame}
 
 \clearpage\pdfbookmark{License}{License}
 \begin{frame}[plain]
-	\frametitle{License}
-	This presentation, and the associated \LaTeX{} code, are published under the \href{https://opensource.org/licenses/MIT}{MIT license}. Feel free to reuse (parts of) the presentation, under condition that you cite the author.
-	
-	Credits are to be given to \hrefblue{https://www.lamsade.dauphine.fr/~ocailloux/}{Olivier Cailloux}, Université Paris-Dauphine.
+  \frametitle{License}
+  This presentation, and the associated \LaTeX{} code, are published under the \href{https://opensource.org/licenses/MIT}{MIT license}. Feel free to reuse (parts of) the presentation, under condition that you cite the author.
+  
+  Credits are to be given to \hrefblue{https://www.lamsade.dauphine.fr/~ocailloux/}{Olivier Cailloux}, Université Paris-Dauphine.
 \end{frame}
 \addtocounter{framenumber}{-1}
 \end{document}
 
 \begin{frame}
-	\frametitle{Title}
-	\begin{itemize}
-		\item Item
-	\end{itemize}
+  \frametitle{Title}
+  \begin{itemize}
+    \item Item
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Title}
-	\begin{block}{Block}
+  \frametitle{Title}
+  \begin{block}{Block}
 %		\setlength\abovedisplayskip{1 ex}% reduce space above equations
-		\begin{itemize}
-			\item Item
-		\end{itemize}
-	\end{block}
-	\begin{itemize}
-		\item Item
-	\end{itemize}
+    \begin{itemize}
+      \item Item
+    \end{itemize}
+  \end{block}
+  \begin{itemize}
+    \item Item
+  \end{itemize}
 \end{frame}
 

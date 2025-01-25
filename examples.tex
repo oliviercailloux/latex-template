@@ -8,26 +8,26 @@
 \input{jdoc/jdoc}
 
 %I find these settings useful in draft mode. Should be removed for final versions.
-	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
-		\tolerance=2000
-	%Accept overfull hbox up to...
-		\hfuzz=2cm
-	%Reduces verbosity about the bad line breaks.
-		\hbadness 5000
-	%Reduces verbosity about the underful vboxes.
-		\vbadness=1300
+  %Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
+    \tolerance=2000
+  %Accept overfull hbox up to...
+    \hfuzz=2cm
+  %Reduces verbosity about the bad line breaks.
+    \hbadness 5000
+  %Reduces verbosity about the underful vboxes.
+    \vbadness=1300
 
 \title{The title \thanks{Thanks.}}
 \author{Olivier Cailloux}
 \author{Name2}
 \affil{Université Paris-Dauphine, PSL Research University, CNRS, LAMSADE, 75016 PARIS, FRANCE\\
-	\href{mailto:olivier.cailloux@dauphine.fr}{olivier.cailloux@dauphine.fr}
+  \href{mailto:olivier.cailloux@dauphine.fr}{olivier.cailloux@dauphine.fr}
 }
 \author{Name3}
 \affil{Affil2}
 \hypersetup{
-	pdfsubject={},
-	pdfkeywords={},
+  pdfsubject={},
+  pdfkeywords={},
 }
 
 \begin{document}
@@ -38,55 +38,55 @@
 \possessivecite{tversky_elimination_1972}[opt]
 
 \begin{equation}
-	a
+  a
 \end{equation}
 \begin{equation}
-	\label{eq:l}
-	l
+  \label{eq:l}
+  l
 \end{equation}
 \begin{equation}
-	\label{eq:r}
-	r
+  \label{eq:r}
+  r
 \end{equation}
 Referring to \cref{eq:r}.
 
 \begin{theorem}
   \label{th:one}
-	Test qedhere
+  Test qedhere
 \end{theorem}
 \begin{proof}
-	Proof
-	\qedhere
-	Another thing.
+  Proof
+  \qedhere
+  Another thing.
 \end{proof}
 
 \begin{theorem}
   \label{th:two}
-	Test qed in eq
+  Test qed in eq
 \end{theorem}
 \begin{proof}
-	Proof
+  Proof
 \begin{equation}
-	a
-	\qedhere
+  a
+  \qedhere
 \end{equation}
 Another thing.
 \end{proof}
 
 \begin{theorem}
-	Test qed in list
+  Test qed in list
 \end{theorem}
 \begin{proof}
-	Proof
-	\begin{itemize}
-		\item one
-		\item two \qedhere
-	\end{itemize}
-	Another thing.
+  Proof
+  \begin{itemize}
+    \item one
+    \item two \qedhere
+  \end{itemize}
+  Another thing.
 \end{proof}
 
 \begin{example}
-	Example content.
+  Example content.
 \end{example}
 
 \begin{remark}
