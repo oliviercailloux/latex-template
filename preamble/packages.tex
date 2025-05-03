@@ -161,6 +161,11 @@
 		\AtBeginDocument{
 		    \hypersetup{pdfauthor={\hrauthor}}
 		}
+    \iftoggle{LCfrench}{
+      \renewcommand\Authand{ et }
+      \renewcommand\Authands{ et }
+    }{
+    }
 	}{
 	}
 %I do not use floatrow, because it requires an ugly hack for proper functioning with KOMA script (see scrhack doc). Instead, the following command centers all floats (using \centering, as the center environment adds space, http://texblog.net/latex-archive/layout/center-centering/), and I manually place my table captions above and figure captions below their contents (https://tex.stackexchange.com/a/3253).
