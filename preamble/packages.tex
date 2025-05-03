@@ -179,9 +179,10 @@
 	%}
 %Provides \Centering, \RaggedLeft, and \RaggedRight and environments Center, FlushLeft, and FlushRight, which allow hyphenation. Also does not suffer from bug https://tex.stackexchange.com/a/35350/. With tikzposter, seems to cause 1=1 to be printed in the middle of the poster.
 	%\usepackage{ragged2e}
-%To typeset units by closely following the “official” rules.
+%To typeset units by closely following the “official” rules; column type S.
 	%\usepackage{siunitx}
-%Loads url, provides better long line handling (https://tex.stackexchange.com/q/716301)
+  %\sisetup{round-mode=places, table-format=1.3, round-precision=3}
+  %Loads url, provides better long line handling (https://tex.stackexchange.com/q/716301)
   \usepackage{xurl}
 %Turns the doi provided by some bibliography styles into URLs.
 	\usepackage{doi}
