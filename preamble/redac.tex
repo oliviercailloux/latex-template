@@ -13,20 +13,20 @@
 \NewDocumentCommand{\email}{m}{\href{mailto:#1}{\nolinkurl{#1}}}
 
 \iftoggle{LCart}{
-	\declaretheorem{theorem}
-	\declaretheorem{lemma}
-	\declaretheorem{proposition}
-	\declaretheorem{conjecture}
-	\declaretheorem{corollary}
-	\declaretheorem{axiom}
-	\crefname{axiom}{Axiom}{Axioms}
-	\declaretheorem{condition}
-	\declaretheorem{property}
-	\declaretheorem{procedure}
+  \declaretheorem{theorem}
+  \declaretheorem{lemma}
+  \declaretheorem{proposition}
+  \declaretheorem{conjecture}
+  \declaretheorem{corollary}
+  \declaretheorem{axiom}
+  \crefname{axiom}{Axiom}{Axioms}
+  \declaretheorem{condition}
+  \declaretheorem{property}
+  \declaretheorem{procedure}
 %Possibly: qed=\scalebox{1.2}{$\hexagon$} (and \usepackage{wasysym}, after amssymb). But probably not useful as most definitions are one § only. Might also consider: circledast, circledcirc, circleddash; black triangle or black circle; diamond…
-	\declaretheorem[style=definition]{definition}
-	\declaretheorem[style=remark, qed=$\triangle$]{example}
-	\declaretheorem[style=remark, qed=$\triangle$]{remark}
+  \declaretheorem[style=definition]{definition}
+  \declaretheorem[style=remark, qed=$\triangle$]{example}
+  \declaretheorem[style=remark, qed=$\triangle$]{remark}
 }
 
 %https://tex.stackexchange.com/a/467188, https://tex.stackexchange.com/a/36088 - uncomment if one of those symbols is used.
@@ -239,11 +239,11 @@
 %\DeclareUnicodeCharacter{0027}{\ifmmode^\prime\else\textquotesingle\fi}
 
 %I find these settings useful in draft mode. Should be removed for final versions.
-	%Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
-	\tolerance=2000
-	%Accept overfull hbox up to...
-		\hfuzz=2cm
-	%Reduces verbosity about the bad line breaks.
-		\hbadness 5000
-	%Reduces verbosity about the underful vboxes.
-		\vbadness=1300
+  %Which line breaks are chosen: accept worse lines, therefore reducing risk of overfull lines. Default = 200.
+  \tolerance=2000
+  %Accept overfull hbox up to...
+    \hfuzz=2cm
+  %Reduces verbosity about the bad line breaks.
+    \hbadness 5000
+  %Reduces verbosity about the underful vboxes.
+    \vbadness=1300
