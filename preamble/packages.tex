@@ -39,7 +39,7 @@
   }
 %Warn about missing characters.
   \tracinglostchars=2
-%Nicer tables: provides \toprule, \midrule, \bottomrule.
+%Nicer tables: provides \toprule, \midrule, \bottomrule. TODO consider rather https://ctan.org/pkg/tabularray
   %\usepackage{booktabs}
 %For new column type X which stretches; can be used together with booktabs, see https://tex.stackexchange.com/a/97137. “tabularx modifies the widths of the columns, whereas tabular* modifies the widths of the inter-column spaces.” Loads array.
   %\usepackage{tabularx}
@@ -175,6 +175,7 @@
 %Permits to customize enumeration display and references
   %\nottoggle{LCpres}{
     %\usepackage{enumitem} %follow list environments by a string to customize enumeration, example: \begin{description}[widest={\bfseries{}SUBJECT-Assessment-WIDE}, itemindent=*] or \begin{enumerate}[label=({\roman*}), ref={\roman*}].
+    %\setlist[description, 1]{labelindent=!, leftmargin=2.5cm, align=right}
   %}{
   %}
 %Provides \Centering, \RaggedLeft, and \RaggedRight and environments Center, FlushLeft, and FlushRight, which allow hyphenation. Also does not suffer from bug https://tex.stackexchange.com/a/35350/. With tikzposter, seems to cause 1=1 to be printed in the middle of the poster.
